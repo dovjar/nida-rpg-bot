@@ -1,13 +1,13 @@
 import { createSchema, Type, typedModel, ExtractDoc, ExtractProps, } from 'ts-mongoose';
 
-export const CombatSkillSchemaSchema = createSchema({
+export const CombatSkillSchema = createSchema({
         name: Type.string({ required: true }),
         lvl: Type.number({required: true}),
         attack: Type.string(),
         defense: Type.string(),
         masteries: Type.array().of(Type.string())
     },
-    { _id: false, timestamps: true }
+    { _id: false, timestamps: false }
 );
 export const CharSchema = createSchema({
     playerId: Type.string({required: true,unique: true, index: true}),
@@ -20,7 +20,7 @@ export const CharSchema = createSchema({
       per: Type.number(),
       will: Type.number(),
     }),
-    combatSkills:Type.array({ required: true }).of(CombatSkillSchemaSchema),
+    combatSkills:Type.array({ required: true }).of(CombatSkillSchema),
     },
   { timestamps: { createdAt: true } }
 );
@@ -28,3 +28,4 @@ export const CharSchema = createSchema({
 export const CharModel = typedModel('Char', CharSchema);
 export type CharDoc = ExtractDoc<typeof CharSchema>;
 export type CharProps = ExtractProps<typeof CharSchema>;
+export type CombatSkillProps = ExtractProps<typeof CombatSkillSchema>;

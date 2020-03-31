@@ -6,7 +6,7 @@ export interface IHandlerOptions{
   handlersPath:string
 }
 export interface ICommandHandler{
-  handle(command:ICommand):ICommandResult;
+  handle(command:ICommand):Promise<CommandResult>;
 }
 export interface ICommandParser{
 
@@ -20,11 +20,14 @@ export interface ICommandParser{
    */
   priority:number;
 }
+// tslint:disable-next-line: no-empty-interface
 export interface ICommand{
-  message:Message;
-
 }
 
-export interface ICommandResult{
-  result:any
+export class CommandResult{
+  constructor(message: string) {
+    this.message = message;
+  }
+  message:string=null;
 }
+

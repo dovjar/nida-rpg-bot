@@ -1,4 +1,4 @@
-import { CharModel, CharDoc, CharProps } from "./models/char";
+import { CharModel, CharDoc, CharProps, CombatSkillProps } from "./models/char";
 const newChar =(playerId:string, name:string)=>{
     return {
         playerId,
@@ -15,6 +15,8 @@ const newChar =(playerId:string, name:string)=>{
     }
 }
 export class Player{
+
+
 
 	constructor(playerId:string) {
         this.playerId = playerId;
@@ -35,16 +37,41 @@ export class Player{
             await this.loadChar("default");
         }
     }
-    async saveChar(char:CharProps){
+    async saveChar(){
         await CharModel.updateOne({playerId: this.char.playerId, name: this.char.name}, this.char);
     }
     async setAttr(attr:string, lvl: number){
         await this.ensureCharLoaded();
         this.char.attr[attr] = lvl;
-        this.saveChar(this.char);
+        this.saveChar();
     }
     async getChar():Promise<CharDoc> {
         await this.ensureCharLoaded();
         return this.char;
+    }
+    async setCombatSkill(skillName: string, lvl: number, attack: string, defense: string):Promise<CombatSkillProps> {
+        await this.ensureCharLoaded();
+        let skill:CombatSkillProps = this.char.combatSkills.find(t=>t.name===skillName);
+        if(!skill){
+            skill = {__v:0, name:skillName, lvl, attack:attack || 'ref',defense: defense || 'dex', masteries:new Array<string>()};
+            this.char.combatSkills.push(skill);
+        }else{
+            if(lvl)
+                skill.lvl = lvl;
+            if(attack)
+                skill.attack = attack;
+            if(defense)
+                skill.defense = defense;
+        }
+        await this.saveChar();
+        return skill;
+    }
+    async removeCombatSkill(skillName: string) {
+        await this.ensureCharLoaded();
+        const idx = this.char.combatSkills.findIndex(t=>t.name===skillName);
+        if(idx>=0){
+            this.char.combatSkills.splice(idx,1);
+        }
+        await this.saveChar();
     }
 }

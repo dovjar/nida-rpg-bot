@@ -1,11 +1,11 @@
-import { ICommandHandler, ICommand, ICommandResult } from '../interfaces';
+import { ICommandHandler, ICommand, CommandResult } from '../interfaces';
 import { Message } from 'discord.js';
 import { HelpCommand } from '../commands/helpCommand';
 
 export const commandHandler:ICommandHandler = {
-  handle(command:ICommand = {message:null }):ICommandResult{
+  async handle(command:ICommand = {message:null }):Promise<CommandResult>{
     if (command instanceof HelpCommand )
-      command.message.reply("cant't handle it");
+      return new CommandResult("cant't handle it");
     return null;
   }
 }

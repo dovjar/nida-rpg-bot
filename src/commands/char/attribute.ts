@@ -6,21 +6,19 @@ export const commandParser:ICommandParser = {
   createCommand(message:Message, cut:string):ICommand{
     const args = cut.match(/char\s+(str|sta|dex|ref|per|will)\s*(\d+)/i);
     if (args)
-      return new CharAttributeCommand(message, args[1], parseInt(args[2], 10));
+      return new CharAttributeCommand(message.member.user.id,message.member.displayName, args[1], parseInt(args[2], 10));
     return null;
   }
 }
 export class CharAttributeCommand implements ICommand{
 
-  constructor(message: Message, attr:string, lvl:number) {
-    this.message = message;
+  constructor(playerId:string, userName:string, attr:string, lvl:number) {
     this.attr = attr;
     this.lvl = lvl;
-    this.playerId = message.member.user.id;
-    this.userName = message.member.displayName;
+    this.playerId = playerId;
+    this.userName = userName;
   }
   playerId:string;
-  message: Message;
   attr: string;
   lvl: number;
   userName: string;

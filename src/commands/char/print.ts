@@ -6,20 +6,18 @@ export const commandParser:ICommandParser = {
   createCommand(message:Message, cut:string):ICommand{
     const args = cut.match(/char\s+print\s*(\S+)?\s*/i);
     if (args)
-      return new CharPrintCommand(message, args[1]);
+      return new CharPrintCommand(message.member.user.id,message.member.displayName, args[1]);
     return null;
   }
 }
 export class CharPrintCommand implements ICommand{
 
-  constructor(message: Message, subcommand:string) {
-    this.message = message;
+  constructor(playerId:string, userName:string, subcommand:string) {
     this.subcommand = subcommand;
-    this.playerId = message.member.user.id;
-    this.userName = message.member.displayName;
+    this.playerId = playerId;
+    this.userName = userName;
   }
   playerId:string;
-  message: Message;
   subcommand: string;
   userName: string;
 }

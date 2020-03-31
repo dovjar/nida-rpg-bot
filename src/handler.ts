@@ -1,5 +1,5 @@
 import { Client, Message } from 'discord.js';
-import { IHandlerOptions, ICommandParser, ICommandHandler } from './interfaces';
+import { IHandlerOptions, ICommandParser, ICommandHandler, CommandResult } from './interfaces';
 
 import fs from 'fs';
 import path from 'path';
@@ -46,7 +46,7 @@ export class MessageHandler{
       try {
         const handler = require(file).commandHandler;
 
-        this.handlers.push(handler);
+        this.handlerDescriptors.push({handler, file } as IHandlerDesciptor);
         console.log(`handler ${file} loaded`);
       } catch (err) {
           console.warn(file + ' handler failed to load.\n', err.stack);
@@ -56,25 +56,27 @@ export class MessageHandler{
   }
   private options:IHandlerOptions;
   private commandParsers:ICommandParser[] = new Array<ICommandParser>();
-  private handlers:ICommandHandler[] = new Array<ICommandHandler>();
+  private handlerDescriptors:IHandlerDesciptor[] = new Array<IHandlerDesciptor>();
   public subscribe(bot: Client){
     bot.on('message', async (message:Message) => {
       if(message.content.startsWith(this.options.prefix)){
-        // console.log(message.content);
+        console.log(message.content);
         const cut = message.content.substring(this.options.prefix.length).trim();
 
         for (const parser of this.commandParsers) {
           const cmd=parser.createCommand(message,cut);
           if(cmd!=null)
           {
-            console.log(`command ${cmd.constructor.name} was created`);
-            const results= this.handlers
-              .map(t=>{
-                const result=t.handle(cmd);
-                if (result) console.log(`command was handled by ${t.constructor.name}`);
-                return result;
-              })
-              .filter(t=>t!=null);
+            console.log(`command ${cmd.constructor.name} was created ${JSON.stringify(cmd)}`);
+            const results= new Array<CommandResult>();
+            for(const hndl of this.handlerDescriptors){
+              const result = await hndl.handler.handle(cmd);
+              if (result){
+                console.log(`command was handled by ${hndl.file}`);
+                message.reply(result.message);
+                results.push(result);
+              }
+            }
             break;
           }
 
@@ -83,4 +85,9 @@ export class MessageHandler{
 
     });
   }
+}
+
+interface IHandlerDesciptor{
+  handler: ICommandHandler,
+  file:string
 }
