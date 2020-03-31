@@ -1,68 +1,86 @@
 import { Client, Message } from 'discord.js';
 import { IHandlerOptions, ICommandParser, ICommandHandler } from './interfaces';
-import { commandHandler } from './handlers/helpCommandHandler';
 
-const fs = require('fs');
+import fs from 'fs';
+import path from 'path';
 
-const defaultOptions:IHandlerOptions={ 
-  prefix:"!", 
-  commandsPath:__dirname +"/commands", 
+const defaultOptions:IHandlerOptions={
+  prefix:"!",
+  commandsPath:__dirname +"/commands",
   handlersPath:__dirname +"/handlers"
+}
+
+const getAllFiles = (dirPath:string, arrayOfFiles:string[]=null) => {
+  const files = fs.readdirSync(dirPath)
+  arrayOfFiles = arrayOfFiles || []
+
+  files.forEach((file) => {
+    if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+      arrayOfFiles = getAllFiles( dirPath + "/" + file, arrayOfFiles )
+    } else {
+      arrayOfFiles.push(path.join( dirPath, "/", file))
+    }
+  })
+
+  return arrayOfFiles
 }
 
 export class MessageHandler{
   constructor(options:IHandlerOptions = defaultOptions) {
     this.options=options;
     const commands= new Array<ICommandParser>();
-    fs.readdirSync(options.commandsPath).filter(file => (file.indexOf('.') !== 0)  && (file.slice(-3) === '.js')).forEach((file) => {
+    getAllFiles(options.commandsPath).filter(file => file.slice(-3) === '.js').forEach((file) => {
       try {
-        let command = require(options.commandsPath + '/' + file)['commandParser'];
-            
+        const command = require(file).commandParser;
+
         commands.push(command);
         console.log(`command ${file} loaded`);
       } catch (err) {
-        if (!err.message.startsWith('Cannot find module'))
-          console.warn(file + ' command failed to load.\n', err.stack);
+          console.warn(file + " command failed to load.\n", err.stack);
       }
     });
-    
+
     this.commandParsers = commands.sort((a, b)=> a.priority - b.priority);
 
-    fs.readdirSync(options.handlersPath).filter(file => (file.indexOf('.') !== 0)  && (file.slice(-3) === '.js')).forEach((file) => {
+    getAllFiles(options.handlersPath).filter(file =>file.slice(-3) === '.js').forEach((file) => {
       try {
-        let handler = require(options.handlersPath + '/' + file)['commandHandler'];
-            
+        const handler = require(file).commandHandler;
+
         this.handlers.push(handler);
         console.log(`handler ${file} loaded`);
       } catch (err) {
-        if (!err.message.startsWith('Cannot find module'))
           console.warn(file + ' handler failed to load.\n', err.stack);
       }
     });
-    
-   
 
   }
   private options:IHandlerOptions;
-  private commandParsers:Array<ICommandParser> = new Array<ICommandParser>();
-  private handlers:Array<ICommandHandler> = new Array<ICommandHandler>();
+  private commandParsers:ICommandParser[] = new Array<ICommandParser>();
+  private handlers:ICommandHandler[] = new Array<ICommandHandler>();
   public subscribe(bot: Client){
-    bot.on('message', async (message) => {
+    bot.on('message', async (message:Message) => {
       if(message.content.startsWith(this.options.prefix)){
-        console.log(message.content);
-        let cut = message.content.substring(this.options.prefix.length).trim();
-        
-        for (let index = 0; index < this.commandParsers.length; index++) {
-          const cmd=this.commandParsers[index].createCommand(message,cut);
+        // console.log(message.content);
+        const cut = message.content.substring(this.options.prefix.length).trim();
+
+        for (const parser of this.commandParsers) {
+          const cmd=parser.createCommand(message,cut);
           if(cmd!=null)
           {
-            const results= this.handlers.map(t=>t.handle(cmd)).filter(t=>t!=null);
+            console.log(`command ${cmd.constructor.name} was created`);
+            const results= this.handlers
+              .map(t=>{
+                const result=t.handle(cmd);
+                if (result) console.log(`command was handled by ${t.constructor.name}`);
+                return result;
+              })
+              .filter(t=>t!=null);
             break;
           }
-          
+
         }
       }
-      
+
     });
   }
 }

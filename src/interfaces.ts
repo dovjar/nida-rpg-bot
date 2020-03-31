@@ -9,10 +9,10 @@ export interface ICommandHandler{
   handle(command:ICommand):ICommandResult;
 }
 export interface ICommandParser{
-  
+
   /**
    * construct new command from message
-   * @param message 
+   * @param message
    */
   createCommand(message:Message, cut:string):ICommand;
   /**
@@ -22,8 +22,9 @@ export interface ICommandParser{
 }
 export interface ICommand{
   message:Message;
-  type:string;
+
 }
 
 export interface ICommandResult{
+  result:any
 }
