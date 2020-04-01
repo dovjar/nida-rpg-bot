@@ -1,6 +1,4 @@
 import { IMessageParser, ICommand } from '../../interfaces';
-import { Message } from 'discord.js';
-import { playersManager } from '../../playersManager';
 
 export const commandParser:IMessageParser = {
   priority:10,

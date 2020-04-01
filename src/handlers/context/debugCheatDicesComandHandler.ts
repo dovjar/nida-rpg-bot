@@ -1,5 +1,4 @@
 import { ICommandHandler, ICommand, CommandResult } from '../../interfaces';
-import { decorateCombatRoll } from '../../decorators';
 import { Context } from '../../context';
 import { DebugCheatDicesComand } from '../../commands/context/debug';
 

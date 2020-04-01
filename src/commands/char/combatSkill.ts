@@ -1,5 +1,4 @@
 import { IMessageParser, ICommand } from '../../interfaces';
-import { Message } from 'discord.js';
 import { CharPrintCommand, PrintCommandsEnum } from './print';
 
 export const commandParser:IMessageParser = {

@@ -14,10 +14,8 @@ export const commandHandler:ICommandHandler = {
     switch(command.subcommand){
       case PrintCommandsEnum.attr:
         return new CommandResult(`**ATTRIBUTES**\n\`\`\`asciidoc\n${getAttributesAsAscii(char)}\n\`\`\``);
-        break;
       case PrintCommandsEnum.combat:
         return new CommandResult(`**COMBAT SKILLS**\n\`\`\`asciidoc\n${getCombatSkillsAsAscii(char)}\n\`\`\``);
-        break;
       default:
         return new CommandResult(`sorry not understand you, awailable print commands are:attr|c[ombat]`);
     }
