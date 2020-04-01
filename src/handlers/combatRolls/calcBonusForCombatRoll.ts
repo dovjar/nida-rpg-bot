@@ -16,6 +16,6 @@ export const commandHandler:ICommandHandler = {
       return new SimpleRedirectResult(`found combat skill ${skill.name}=${skill.lvl} using attack ${skill.attack}=${char.attr[skill.attack]} **total mod**=${command.combatRollCommand.mod} rolling dices:`,
       [command.combatRollCommand]);
     }
-    return new SimpleRedirectResult(`404 not found ${command.name}, rolling dices`, [command.combatRollCommand]);
+    return new SimpleRedirectResult(`404 not found **${command.name}**, rolling dices`, [command.combatRollCommand]);
   }
 }

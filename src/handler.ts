@@ -79,7 +79,7 @@ export class MessageHandler{
                   const result = await hndl.handler.handle(cmd,context);
                   if (result){
                     console.log(`command was handled by ${hndl.file}`);
-                    message.reply(result.message);
+                    message.reply(`${context.cheatsEnabled? '**CHEATER** ':''}${result.message}`);
                     results.push(result);
                     if (isIHaveTheCommand(result)){
                       (result as IHaveTheCommand).commands.forEach(t=>{
