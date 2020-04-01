@@ -1,7 +1,7 @@
 import { IMessageParser, ICommand } from '../../interfaces';
 
 export const commandParser:IMessageParser = {
-  priority:10,
+  priority:0,
   async createCommand(cut:string):Promise<ICommand[]>{
     const args = cut.match(/c\s*([a=zA-Z_0-9]*)?\s*(([+-])?(\d+))?/i);
     if (args){

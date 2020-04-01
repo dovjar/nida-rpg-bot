@@ -2,7 +2,7 @@ import { IMessageParser, ICommand } from '../../interfaces';
 import { CharPrintCommand, PrintCommandsEnum } from './print';
 
 export const commandParser:IMessageParser = {
-  priority:10,
+  priority:0,
   async createCommand(cut:string):Promise<ICommand[]>{
     const args = cut.match(/char\s+(combat|c)(\s+(add|a)*(remove|r)*\s*(\S+)\s*((\d+)?\s*(a=(\S+))*\s*(d=(\S+))*)*)*/i);
     if (args && (args[7] || args[3] || args[9] || args[11]) && (!args[4]))

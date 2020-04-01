@@ -10,7 +10,14 @@ export const commandHandler:ICommandHandler = {
 
     const roll = context.rollMany(3);
     const initialSum= roll.reduce((a, b) => a + b, 0);
-
-    return new CommandResult(`[${decorateCombatRoll(roll)}]=${initialSum} ${command.mod!==0? `${command.mod>0?'+':''}${command.mod}=${initialSum+command.mod}`:''}`);
+    const isSuccess=initialSum>=17;
+    const isFailure=initialSum<=4;
+    const isAutofail =!isFailure && !isSuccess && initialSum<=context.globalContext.autofail;
+    const showMod=():string=>  command.mod!==0? `${command.mod>0?'+':''}${command.mod}=${initialSum+command.mod}`:'';
+    const showSuccess=():string => isSuccess?`**critical success**`:'';
+    const showFailure=():string => isFailure?`**critical failure**`:'';
+    const showAutofail=():string => isAutofail?`**autofail**`:'';
+    return new CommandResult(`[${decorateCombatRoll(roll)}]=${initialSum} ${showMod()} ${showSuccess()}${showFailure()}${showAutofail()}`);
   }
 }
+

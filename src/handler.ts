@@ -41,7 +41,7 @@ export class MessageHandler{
       }
     });
 
-    this.messageParsers = commands.sort((a, b)=> a.priority - b.priority);
+    this.messageParsers = commands.sort((a, b)=> -a.priority + b.priority);
 
     getAllFiles(options.handlersPath).filter(file =>file.slice(-3) === '.js').forEach((file) => {
       try {
