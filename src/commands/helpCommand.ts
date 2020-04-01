@@ -1,12 +1,12 @@
-import { ICommandParser, ICommand } from '../interfaces';
+import { IMessageParser, ICommand } from '../interfaces';
 import { Message } from 'discord.js';
 import { isNull } from 'util';
 
-export const commandParser:ICommandParser = {
+export const commandParser:IMessageParser = {
   priority:0,
-  createCommand(message:Message, cut:string):ICommand{
+  createCommand(message:Message, cut:string):ICommand[]{
     if (cut === 'help')
-      return new HelpCommand();
+      return [new HelpCommand()];
     return null;
   }
 }

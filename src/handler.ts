@@ -1,5 +1,5 @@
 import { Client, Message } from 'discord.js';
-import { IHandlerOptions, ICommandParser, ICommandHandler, CommandResult } from './interfaces';
+import { IHandlerOptions, IMessageParser, ICommandHandler, CommandResult } from './interfaces';
 
 import fs from 'fs';
 import path from 'path';
@@ -28,7 +28,7 @@ const getAllFiles = (dirPath:string, arrayOfFiles:string[]=null) => {
 export class MessageHandler{
   constructor(options:IHandlerOptions = defaultOptions) {
     this.options=options;
-    const commands= new Array<ICommandParser>();
+    const commands= new Array<IMessageParser>();
     getAllFiles(options.commandsPath).filter(file => file.slice(-3) === '.js').forEach((file) => {
       try {
         const command = require(file).commandParser;
@@ -40,7 +40,7 @@ export class MessageHandler{
       }
     });
 
-    this.commandParsers = commands.sort((a, b)=> a.priority - b.priority);
+    this.messageParsers = commands.sort((a, b)=> a.priority - b.priority);
 
     getAllFiles(options.handlersPath).filter(file =>file.slice(-3) === '.js').forEach((file) => {
       try {
@@ -55,7 +55,7 @@ export class MessageHandler{
 
   }
   private options:IHandlerOptions;
-  private commandParsers:ICommandParser[] = new Array<ICommandParser>();
+  private messageParsers:IMessageParser[] = new Array<IMessageParser>();
   private handlerDescriptors:IHandlerDesciptor[] = new Array<IHandlerDesciptor>();
   public subscribe(bot: Client){
     bot.on('message', async (message:Message) => {
@@ -63,18 +63,22 @@ export class MessageHandler{
         console.log(message.content);
         const cut = message.content.substring(this.options.prefix.length).trim();
 
-        for (const parser of this.commandParsers) {
-          const cmd=parser.createCommand(message,cut);
-          if(cmd!=null)
+        for (const parser of this.messageParsers) {
+          const commands=parser.createCommand(message,cut);
+          if(commands!=null)
           {
-            console.log(`command ${cmd.constructor.name} was created ${JSON.stringify(cmd)}`);
+            commands.forEach(t=>{
+              console.log(`parsed as :${t.constructor.name}= ${JSON.stringify(t)}`);
+            });
             const results= new Array<CommandResult>();
-            for(const hndl of this.handlerDescriptors){
-              const result = await hndl.handler.handle(cmd);
-              if (result){
-                console.log(`command was handled by ${hndl.file}`);
-                message.reply(result.message);
-                results.push(result);
+            for(const cmd of commands){
+              for(const hndl of this.handlerDescriptors){
+                const result = await hndl.handler.handle(cmd);
+                if (result){
+                  console.log(`command was handled by ${hndl.file}`);
+                  message.reply(result.message);
+                  results.push(result);
+                }
               }
             }
             break;

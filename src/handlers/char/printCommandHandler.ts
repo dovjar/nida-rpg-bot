@@ -1,6 +1,6 @@
 import { ICommandHandler, ICommand, CommandResult } from '../../interfaces';
 import { playersManager } from '../../playersManager';
-import { CharPrintCommand } from '../../commands/char/print';
+import { CharPrintCommand, PrintCommandsEnum } from '../../commands/char/print';
 import { CharProps } from '../../models/char';
 import WordTable from 'word-table';
 
@@ -11,11 +11,10 @@ export const commandHandler:ICommandHandler = {
 
     const char = await playersManager.getPlayer(command.playerId).getChar();
     switch(command.subcommand){
-      case 'attr':
+      case PrintCommandsEnum.attr:
         return new CommandResult(`**ATTRIBUTES**\n\`\`\`asciidoc\n${getAttributesAsAscii(char)}\n\`\`\``);
         break;
-      case 'combat':
-      case 'c':
+      case PrintCommandsEnum.combat:
         return new CommandResult(`**COMBAT SKILLS**\n\`\`\`asciidoc\n${getCombatSkillsAsAscii(char)}\n\`\`\``);
         break;
       default:

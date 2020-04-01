@@ -8,13 +8,13 @@ export interface IHandlerOptions{
 export interface ICommandHandler{
   handle(command:ICommand):Promise<CommandResult>;
 }
-export interface ICommandParser{
+export interface IMessageParser{
 
   /**
    * construct new command from message
    * @param message
    */
-  createCommand(message:Message, cut:string):ICommand;
+  createCommand(message:Message, cut:string):ICommand[];
   /**
    * commands priority, e.g. have two commands, 'help' and 'help ping', in that case commands 'help ping' priority must be higher
    */
