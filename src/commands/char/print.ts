@@ -3,7 +3,7 @@ import { Message } from 'discord.js';
 
 export const commandParser:IMessageParser = {
   priority:10,
-  createCommand(message:Message, cut:string):ICommand[]{
+  async createCommand(message:Message, cut:string):Promise<ICommand[]>{
     const args = cut.match(/char\s+print\s*(attr|combat|c)?\s*/i);
     if (args){
       let subCommand = args[1] || 'help';

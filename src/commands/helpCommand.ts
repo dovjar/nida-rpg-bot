@@ -4,7 +4,7 @@ import { isNull } from 'util';
 
 export const commandParser:IMessageParser = {
   priority:0,
-  createCommand(message:Message, cut:string):ICommand[]{
+  async createCommand(message:Message, cut:string):Promise<ICommand[]>{
     if (cut === 'help')
       return [new HelpCommand()];
     return null;

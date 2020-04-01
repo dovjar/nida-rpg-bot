@@ -64,11 +64,11 @@ export class MessageHandler{
         const cut = message.content.substring(this.options.prefix.length).trim();
 
         for (const parser of this.messageParsers) {
-          const commands=parser.createCommand(message,cut);
+          const commands=await parser.createCommand(message,cut);
           if(commands!=null)
           {
             commands.forEach(t=>{
-              console.log(`parsed as :${t.constructor.name}= ${JSON.stringify(t)}`);
+              console.log(`command received: ${t.constructor.name}= ${JSON.stringify(t)}`);
             });
             const results= new Array<CommandResult>();
             for(const cmd of commands){

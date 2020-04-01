@@ -3,7 +3,7 @@ import { Message } from 'discord.js';
 
 export const commandParser:IMessageParser = {
   priority:10,
-  createCommand(message:Message, cut:string):ICommand[]{
+  async createCommand(message:Message, cut:string):Promise<ICommand[]>{
     const args = cut.match(/char\s+(str|sta|dex|ref|per|will)\s*(\d+)/i);
     if (args)
       return [new CharAttributeCommand(message.member.user.id,message.member.displayName, args[1], parseInt(args[2], 10))];
