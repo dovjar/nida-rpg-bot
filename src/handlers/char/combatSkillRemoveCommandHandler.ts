@@ -1,12 +1,14 @@
 import { ICommandHandler, ICommand, CommandResult } from '../../interfaces';
 import { playersManager } from '../../playersManager';
 import { CharRemoveCombatSkillCommand } from '../../commands/char/combatSkill';
+import { Context } from '../../context';
+
 export const commandHandler:ICommandHandler = {
-  async handle(command:ICommand = {message:null }):Promise<CommandResult>{
+  async handle(command:ICommand = {message:null }, context:Context):Promise<CommandResult>{
     if (!(command instanceof CharRemoveCombatSkillCommand ))
       return null;
 
-    const player = playersManager.getPlayer(command.playerId);
+    const player = playersManager.getPlayer(context.userId);
     await player.removeCombatSkill(command.skillName);
     return new CommandResult(`skill ${command.skillName} removed`);
   }

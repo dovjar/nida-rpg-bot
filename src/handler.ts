@@ -1,8 +1,9 @@
 import { Client, Message } from 'discord.js';
-import { IHandlerOptions, IMessageParser, ICommandHandler, CommandResult } from './interfaces';
+import { IHandlerOptions, IMessageParser, ICommandHandler, CommandResult, isIHaveTheCommand, IHaveTheCommand } from './interfaces';
 
 import fs from 'fs';
 import path from 'path';
+import { contextManager } from './context';
 
 const defaultOptions:IHandlerOptions={
   prefix:"!",
@@ -60,26 +61,40 @@ export class MessageHandler{
   public subscribe(bot: Client){
     bot.on('message', async (message:Message) => {
       if(message.content.startsWith(this.options.prefix)){
+        const context = contextManager.getContext(message.member.user.id);
         console.log(message.content);
         const cut = message.content.substring(this.options.prefix.length).trim();
 
         for (const parser of this.messageParsers) {
-          const commands=await parser.createCommand(message,cut);
+          const commands=await parser.createCommand(cut);
           if(commands!=null)
           {
-            commands.forEach(t=>{
-              console.log(`command received: ${t.constructor.name}= ${JSON.stringify(t)}`);
-            });
             const results= new Array<CommandResult>();
-            for(const cmd of commands){
+            let idx=0;
+            while(idx<commands.length){
+              const cmd = commands[idx];
+              console.log(`command received: ${cmd.constructor.name}= ${JSON.stringify(cmd)}`);
               for(const hndl of this.handlerDescriptors){
-                const result = await hndl.handler.handle(cmd);
-                if (result){
-                  console.log(`command was handled by ${hndl.file}`);
-                  message.reply(result.message);
-                  results.push(result);
+                try{
+                  const result = await hndl.handler.handle(cmd,context);
+                  if (result){
+                    console.log(`command was handled by ${hndl.file}`);
+                    message.reply(result.message);
+                    results.push(result);
+                    if (isIHaveTheCommand(result)){
+                      (result as IHaveTheCommand).commands.forEach(t=>{
+                        console.log(`new command ${t.constructor.name} was produced by ${hndl.file}`);
+                        commands.push(t);
+                      });
+                    }
+                  }
+                }
+                catch(exception){
+                  console.log(exception);
+                  message.reply(`:unamused: something goes wrong\n${exception.message}`);
                 }
               }
+              idx++;
             }
             break;
           }

@@ -1,4 +1,5 @@
 import { Message } from "discord.js";
+import { Context } from "./context";
 
 export interface IHandlerOptions{
   prefix:string,
@@ -6,15 +7,11 @@ export interface IHandlerOptions{
   handlersPath:string
 }
 export interface ICommandHandler{
-  handle(command:ICommand):Promise<CommandResult>;
+  handle(command:ICommand, context:Context):Promise<CommandResult>;
 }
 export interface IMessageParser{
 
-  /**
-   * construct new command from message
-   * @param message
-   */
-  createCommand(message:Message, cut:string):Promise<ICommand[]>;
+  createCommand(cut:string):Promise<ICommand[]>;
   /**
    * commands priority, e.g. have two commands, 'help' and 'help ping', in that case commands 'help ping' priority must be higher
    */
@@ -31,3 +28,20 @@ export class CommandResult{
   message:string=null;
 }
 
+export interface IHaveTheCommand{
+  commands:ICommand[];
+}
+
+// tslint:disable-next-line: max-classes-per-file
+export class SimpleRedirectResult extends CommandResult implements IHaveTheCommand {
+  commands: ICommand[];
+  constructor(message: string, command: ICommand[]) {
+    super(message);
+    this.commands = command;
+  }
+
+}
+
+export function isIHaveTheCommand(arg: any): arg is IHaveTheCommand {
+  return (arg && arg.commands !== undefined);
+}

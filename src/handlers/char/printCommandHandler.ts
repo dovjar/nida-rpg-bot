@@ -3,13 +3,14 @@ import { playersManager } from '../../playersManager';
 import { CharPrintCommand, PrintCommandsEnum } from '../../commands/char/print';
 import { CharProps } from '../../models/char';
 import WordTable from 'word-table';
+import { Context } from '../../context';
 
 export const commandHandler:ICommandHandler = {
-  async handle(command:ICommand ):Promise<CommandResult>{
+  async handle(command:ICommand, context:Context ):Promise<CommandResult>{
     if (!(command instanceof CharPrintCommand ))
       return null;
 
-    const char = await playersManager.getPlayer(command.playerId).getChar();
+    const char = await playersManager.getPlayer(context.userId).getChar();
     switch(command.subcommand){
       case PrintCommandsEnum.attr:
         return new CommandResult(`**ATTRIBUTES**\n\`\`\`asciidoc\n${getAttributesAsAscii(char)}\n\`\`\``);

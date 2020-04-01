@@ -26,10 +26,15 @@ export class Player{
     char:CharDoc;
 
     async loadChar(name:string){
-        this.char = await CharModel.findOne({playerId: this.playerId, name});
-        if (! this.char){
-            this.char = new CharModel(newChar(this.playerId, name));
-            await this.char.save();
+        try{
+            this.char = await CharModel.findOne({playerId: this.playerId, name});
+            if (! this.char){
+                this.char = new CharModel(newChar(this.playerId, name));
+                await this.char.save();
+            }
+        }
+        catch{
+            throw new Error(`can't load a char from DB.`);
         }
     }
     async ensureCharLoaded(){
@@ -38,7 +43,12 @@ export class Player{
         }
     }
     async saveChar(){
-        await CharModel.updateOne({playerId: this.char.playerId, name: this.char.name}, this.char);
+        try{
+            await CharModel.updateOne({playerId: this.char.playerId, name: this.char.name}, this.char);
+        }
+        catch{
+            throw new Error(`can't save a char from DB.`);
+        }
     }
     async setAttr(attr:string, lvl: number){
         await this.ensureCharLoaded();

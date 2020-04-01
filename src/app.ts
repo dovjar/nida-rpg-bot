@@ -1,7 +1,6 @@
 import { MessageHandler } from './handler';
 import Discord = require('discord.js');
 import mongoose from 'mongoose';
-import { CharModel } from './models/char';
 
 // tslint:disable-next-line:no-var-requires
 const CONFIG = require('./../config.json');
@@ -10,7 +9,8 @@ const BOT = new Discord.Client();
 mongoose.connect("mongodb://root:rootpassword@10.10.10.190:27017/discord?authSource=admin", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  });
+  }).catch((e)=> console.error(e));
+mongoose.set('bufferCommands', false);
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
