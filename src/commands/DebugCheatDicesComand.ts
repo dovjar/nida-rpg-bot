@@ -1,8 +1,9 @@
-import { ICommand } from '../../interfaces';
+import { ICommand, ICommandResult } from "../interfaces";
+
 export class DebugCheatDicesCommand implements ICommand {
   constructor(dices: number[]) {
     this.dices = dices;
   }
-    result: import("../../interfaces").ICommandResult;
+    result: ICommandResult;
   dices: number[];
 }

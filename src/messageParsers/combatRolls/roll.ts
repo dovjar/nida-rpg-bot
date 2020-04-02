@@ -5,13 +5,14 @@ import { CombatRollCommand } from '../../commands/roll/CombatRollCommand';
 export const commandParser:IMessageParser = {
   priority:0,
   async createCommand(cut:string):Promise<ICommand[]>{
-    const args = cut.match(/c(?=\s+)\s+([a-zA-Z0-9_]+)?\s*(([+-])?(\d+))?/i);
+    const args = cut.match(/^((c(?=\s+)\s+([a-zA-Z0-9_]+)?)|(c)?)\s*(([+-])?(\d+))?$/i);
     if (args){
-        const mod = parseInt(args[4],10) * ((args[3] || '+') ==='+'? 1:-1) || 0;
+        const mod = parseInt(args[7],10) * ((args[6] || '+') ==='+'? 1:-1) || 0;
+        const bonus = args[3];
         const cmd=new CombatRollCommand(mod);
-        if (args[1]){
+        if (bonus){
           // bonus specified
-          return [new CalcBonusForCombatRollCommand(cmd, args[1])];
+          return [new CalcBonusForCombatRollCommand(cmd, bonus)];
 
         }
         else{
