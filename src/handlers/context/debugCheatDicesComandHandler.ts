@@ -1,10 +1,11 @@
-import { ICommandHandler, ICommand, CommandResult } from '../../interfaces';
+import { ICommandHandler, ICommand } from '../../interfaces';
+import { CommandResult } from "../../commandResults/CommandResult";
 import { Context } from '../../context';
-import { DebugCheatDicesComand } from "../../commands/context/DebugCheatDicesComand";
+import { DebugCheatDicesCommand } from "../../commands/context/DebugCheatDicesCommand";
 
 export const commandHandler:ICommandHandler = {
   async handle(command:ICommand, context:Context ):Promise<CommandResult>{
-    if (!(command instanceof DebugCheatDicesComand ))
+    if (!(command instanceof DebugCheatDicesCommand ))
       return null;
 
     context.setDebugDices(command.dices);

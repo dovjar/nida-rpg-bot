@@ -1,4 +1,5 @@
-import { ICommandHandler, ICommand, CommandResult } from '../../interfaces';
+import { ICommandHandler, ICommand } from '../../interfaces';
+import { CommandResult } from "../../commandResults/CommandResult";
 import { playersManager } from '../../playersManager';
 import { CharPrintCommand, PrintCommandsEnum } from "../../commands/char/CharPrintCommand";
 import { CharProps } from '../../models/char';
@@ -11,13 +12,13 @@ export const commandHandler:ICommandHandler = {
       return null;
 
     const char = await playersManager.getPlayer(context.userId).getChar();
-    switch(command.subcommand){
+    switch(command.subCommand){
       case PrintCommandsEnum.attr:
         return new CommandResult(`**ATTRIBUTES**\n\`\`\`asciidoc\n${getAttributesAsAscii(char)}\n\`\`\``);
       case PrintCommandsEnum.combat:
         return new CommandResult(`**COMBAT SKILLS**\n\`\`\`asciidoc\n${getCombatSkillsAsAscii(char)}\n\`\`\``);
       default:
-        return new CommandResult(`sorry not understand you, awailable print commands are:attr|c[ombat]`);
+        return new CommandResult(`sorry not understand you, available print commands are:attr|c[ombat]`);
     }
 
   }

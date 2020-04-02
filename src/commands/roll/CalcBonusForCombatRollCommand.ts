@@ -1,4 +1,4 @@
-import { ICommand } from '../../interfaces';
+import { ICommand, ICommandResult } from '../../interfaces';
 import { CombatRollCommand } from "./CombatRollCommand";
 export class CalcBonusForCombatRollCommand implements ICommand {
   combatRollCommand: CombatRollCommand;
@@ -7,4 +7,5 @@ export class CalcBonusForCombatRollCommand implements ICommand {
     this.combatRollCommand = combatRollCommand;
     this.name = name;
   }
+  result: ICommandResult;
 }

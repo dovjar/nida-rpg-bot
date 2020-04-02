@@ -1,9 +1,10 @@
-import { ICommand } from '../../interfaces';
+import { ICommand, ICommandResult } from '../../interfaces';
 export class CharPrintCommand implements ICommand {
-  constructor(subcommand: PrintCommandsEnum) {
-    this.subcommand = subcommand;
+  constructor(subCommand: PrintCommandsEnum) {
+    this.subCommand = subCommand;
   }
-  subcommand: PrintCommandsEnum;
+  subCommand: PrintCommandsEnum;
+  result: ICommandResult;
 }
 export enum PrintCommandsEnum {
     attr = 'attr',

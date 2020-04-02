@@ -1,14 +1,11 @@
 import { IMessageParser, ICommand } from '../../interfaces';
-import { DebugResetCommand } from '../../commands/context/DebugResetCommand';
+import { LuckCommand } from '../../commands/luck/LuckCommand';
 
 export const commandParser:IMessageParser = {
   priority:0,
   async createCommand(cut:string):Promise<ICommand[]>{
-    const args = cut.match(/debug\s+reset/i);
-    if (args){
-        return [new DebugResetCommand()];
-    }
+    if (cut === 'luck')
+      return [new LuckCommand()];
     return null;
   }
 }
-

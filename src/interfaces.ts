@@ -1,4 +1,3 @@
-import { Message } from "discord.js";
 import { Context } from "./context";
 
 export interface IHandlerOptions{
@@ -7,7 +6,7 @@ export interface IHandlerOptions{
   handlersPath:string
 }
 export interface ICommandHandler{
-  handle(command:ICommand, context:Context):Promise<CommandResult>;
+  handle(command:ICommand, context:Context):Promise<ICommandResult>;
 }
 export interface IMessageParser{
 
@@ -19,27 +18,13 @@ export interface IMessageParser{
 }
 // tslint:disable-next-line: no-empty-interface
 export interface ICommand{
+  result: ICommandResult
 }
-
-export class CommandResult{
-  constructor(message: string) {
-    this.message = message;
-  }
-  message:string=null;
+export interface ICommandResult{
+  message:string;
 }
-
 export interface IHaveTheCommand{
   commands:ICommand[];
-}
-
-// tslint:disable-next-line: max-classes-per-file
-export class SimpleRedirectResult extends CommandResult implements IHaveTheCommand {
-  commands: ICommand[];
-  constructor(message: string, command: ICommand[]) {
-    super(message);
-    this.commands = command;
-  }
-
 }
 
 export function isIHaveTheCommand(arg: any): arg is IHaveTheCommand {

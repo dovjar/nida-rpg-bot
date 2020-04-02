@@ -1,5 +1,6 @@
 import { Client, Message } from 'discord.js';
-import { IHandlerOptions, IMessageParser, ICommandHandler, CommandResult, isIHaveTheCommand, IHaveTheCommand } from './interfaces';
+import { IHandlerOptions, IMessageParser, ICommandHandler, isIHaveTheCommand, IHaveTheCommand } from './interfaces';
+import { CommandResult } from "./commandResults/CommandResult";
 
 import fs from 'fs';
 import path from 'path';
@@ -47,7 +48,7 @@ export class MessageHandler{
       try {
         const handler = require(file).commandHandler;
 
-        this.handlerDescriptors.push({handler, file } as IHandlerDesciptor);
+        this.handlerDescriptors.push({handler, file } as IHandlerDescriptor);
         console.log(`handler ${file} loaded`);
       } catch (err) {
           console.warn(file + ' handler failed to load.\n', err.stack);
@@ -57,7 +58,7 @@ export class MessageHandler{
   }
   private options:IHandlerOptions;
   private messageParsers:IMessageParser[] = new Array<IMessageParser>();
-  private handlerDescriptors:IHandlerDesciptor[] = new Array<IHandlerDesciptor>();
+  private handlerDescriptors:IHandlerDescriptor[] = new Array<IHandlerDescriptor>();
   public subscribe(bot: Client){
     bot.on('message', async (message:Message) => {
       if(message.content.startsWith(this.options.prefix)){
@@ -69,21 +70,21 @@ export class MessageHandler{
           const commands=await parser.createCommand(cut);
           if(commands!=null)
           {
-            const results= new Array<CommandResult>();
             let idx=0;
             while(idx<commands.length){
               const cmd = commands[idx];
               console.log(`command received: ${cmd.constructor.name}= ${JSON.stringify(cmd)}`);
-              for(const hndl of this.handlerDescriptors){
+              for(const handler of this.handlerDescriptors){
                 try{
-                  const result = await hndl.handler.handle(cmd,context);
+                  const result = await handler.handler.handle(cmd,context);
                   if (result){
-                    console.log(`command was handled by ${hndl.file}`);
+                    console.log(`command was handled by ${handler.file}`);
                     message.reply(`${context.cheatsEnabled? '**CHEATER** ':''}${result.message}`);
-                    results.push(result);
+                    cmd.result = result;
+                    context.insertHistory(cmd);
                     if (isIHaveTheCommand(result)){
                       (result as IHaveTheCommand).commands.forEach(t=>{
-                        console.log(`new command ${t.constructor.name} was produced by ${hndl.file}`);
+                        console.log(`new command ${t.constructor.name} was produced by ${handler.file}`);
                         commands.push(t);
                       });
                     }
@@ -106,7 +107,7 @@ export class MessageHandler{
   }
 }
 
-interface IHandlerDesciptor{
+interface IHandlerDescriptor{
   handler: ICommandHandler,
   file:string
 }

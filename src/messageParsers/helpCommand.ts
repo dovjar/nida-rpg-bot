@@ -1,4 +1,4 @@
-import { IMessageParser, ICommand } from '../interfaces';
+import { IMessageParser, ICommand, ICommandResult } from '../interfaces';
 
 export const commandParser:IMessageParser = {
   priority:0,
@@ -9,5 +9,5 @@ export const commandParser:IMessageParser = {
   }
 }
 export class HelpCommand implements ICommand{
-
+  result: ICommandResult;
 }

@@ -1,7 +1,9 @@
-import { ICommandHandler, ICommand, CommandResult } from '../../interfaces';
+import { ICommandHandler, ICommand } from '../../interfaces';
+import { CommandResult } from "../../commandResults/CommandResult";
 import { CombatRollCommand } from "../../commands/roll/CombatRollCommand";
 import { decorateCombatRoll } from '../../decorators';
 import { Context } from '../../context';
+import { CombatRollResult } from '../../commandResults/CombatRollResult';
 
 export const commandHandler:ICommandHandler = {
   async handle(command:ICommand, context:Context ):Promise<CommandResult>{
@@ -12,12 +14,12 @@ export const commandHandler:ICommandHandler = {
     const initialSum= roll.reduce((a, b) => a + b, 0);
     const isSuccess=initialSum>=17;
     const isFailure=initialSum<=4;
-    const isAutofail =!isFailure && !isSuccess && initialSum<=context.globalContext.autofail;
+    const isAutoFail =!isFailure && !isSuccess && initialSum<=context.globalContext.autoFail;
     const showMod=():string=>  command.mod!==0? `${command.mod>0?'+':''}${command.mod}=${initialSum+command.mod}`:'';
     const showSuccess=():string => isSuccess?`**critical success**`:'';
     const showFailure=():string => isFailure?`**critical failure**`:'';
-    const showAutofail=():string => isAutofail?`**autofail**`:'';
-    return new CommandResult(`[${decorateCombatRoll(roll)}]=${initialSum} ${showMod()} ${showSuccess()}${showFailure()}${showAutofail()}`);
+    const showAutoFail=():string => isAutoFail?`**autofail**`:'';
+    return new CombatRollResult(`[${decorateCombatRoll(roll)}]=${initialSum} ${showMod()} ${showSuccess()}${showFailure()}${showAutoFail()}`, roll, command.mod);
   }
 }
 

@@ -1,4 +1,4 @@
-import { ICommand } from '../../interfaces';
+import { ICommand, ICommandResult } from '../../interfaces';
 export class CharAddCombatSkillCommand implements ICommand {
   constructor(name: string, lvl: number, attack: string, defense: string) {
     this.skillName = name;
@@ -10,4 +10,5 @@ export class CharAddCombatSkillCommand implements ICommand {
   lvl: number;
   attack: string;
   defense: string;
+  result: ICommandResult;
 }

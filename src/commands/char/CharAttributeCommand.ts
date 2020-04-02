@@ -1,4 +1,4 @@
-import { ICommand } from '../../interfaces';
+import { ICommand, ICommandResult } from '../../interfaces';
 export class CharAttributeCommand implements ICommand {
   constructor(attr: string, lvl: number) {
     this.attr = attr;
@@ -6,4 +6,5 @@ export class CharAttributeCommand implements ICommand {
   }
   lvl: number;
   attr: string;
+  result: ICommandResult;
 }

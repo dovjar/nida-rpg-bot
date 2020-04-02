@@ -1,4 +1,6 @@
-import { ICommandHandler, ICommand, CommandResult, SimpleRedirectResult } from '../../interfaces';
+import { ICommandHandler, ICommand } from '../../interfaces';
+import { CommandResult } from "../../commandResults/CommandResult";
+import { SimpleRedirectResult } from "../../commandResults/SimpleRedirectResult";
 import { CalcBonusForCombatRollCommand } from "../../commands/roll/CalcBonusForCombatRollCommand";
 import { Context } from '../../context';
 import { playersManager } from '../../playersManager';

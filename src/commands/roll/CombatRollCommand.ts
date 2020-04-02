@@ -1,4 +1,5 @@
 import { ICommand } from '../../interfaces';
+import { CombatRollResult } from '../../commandResults/CombatRollResult';
 // tslint:disable-next-line: max-classes-per-file
 export class CombatRollCommand implements ICommand {
   constructor(mod: number) {
@@ -6,4 +7,5 @@ export class CombatRollCommand implements ICommand {
   }
   mod: number;
   userName: string;
+  result: CombatRollResult;
 }

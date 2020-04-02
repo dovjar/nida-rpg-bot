@@ -1,21 +1,12 @@
+import { ICommand } from "./interfaces";
+
+export interface ICommandRecord{
+    command: ICommand,
+    handledAt: number
+}
+
 export class Context{
-    setDebugDices(dices: number[]) {
-        this._cheatsEnabled=true;
-        this.dices = dices;
-    }
-    resetDices(){
-        this._cheatsEnabled=false;
-        this.dices = null;
-    }
-    dices:number[];
-    /**
-     * Getter isCheatsEnabled
-     * @return {boolean}
-     */
-	public get cheatsEnabled(): boolean {
-		return this._cheatsEnabled;
-	}
-    private _cheatsEnabled:boolean=false;
+
 
     constructor(globalContext:GlobalContext, userId: string) {
         this._globalContext = globalContext;
@@ -50,11 +41,43 @@ export class Context{
 		return this._globalContext;
 	}
     private _globalContext:GlobalContext;
+    setDebugDices(dices: number[]) {
+        this._cheatsEnabled=true;
+        this.dices = dices;
+    }
+    resetDices(){
+        this._cheatsEnabled=false;
+        this.dices = null;
+    }
+    dices:number[];
+    /**
+     * Getter isCheatsEnabled
+     * @return {boolean}
+     */
+	public get cheatsEnabled(): boolean {
+		return this._cheatsEnabled;
+	}
+    private _cheatsEnabled:boolean=false;
+
+    /**
+     * Getter commandsHistory
+     * @return {ICommandRecord[]}
+     */
+	public get commandsHistory(): ICommandRecord[] {
+		return this._commandsHistory;
+	}
+    private _commandsHistory:ICommandRecord[] = [];
+    public insertHistory(command:ICommand){
+        this._commandsHistory.push({command,handledAt:Date.now()})
+        if (this._commandsHistory.length>100){
+            this._commandsHistory.shift();
+        }
+    }
 
 }
 // tslint:disable-next-line: max-classes-per-file
 export class GlobalContext{
-    autofail:number = 7;
+    autoFail:number = 7;
 }
 
 // tslint:disable-next-line: max-classes-per-file
