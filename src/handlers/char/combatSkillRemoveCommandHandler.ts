@@ -1,6 +1,6 @@
 import { ICommandHandler, ICommand, CommandResult } from '../../interfaces';
 import { playersManager } from '../../playersManager';
-import { CharRemoveCombatSkillCommand } from '../../commands/char/combatSkill';
+import { CharRemoveCombatSkillCommand } from "../../commands/char/CharRemoveCombatSkillCommand";
 import { Context } from '../../context';
 
 export const commandHandler:ICommandHandler = {

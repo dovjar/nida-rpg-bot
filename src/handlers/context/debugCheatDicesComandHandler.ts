@@ -1,6 +1,6 @@
 import { ICommandHandler, ICommand, CommandResult } from '../../interfaces';
 import { Context } from '../../context';
-import { DebugCheatDicesComand } from '../../commands/context/debug';
+import { DebugCheatDicesComand } from "../../commands/context/DebugCheatDicesComand";
 
 export const commandHandler:ICommandHandler = {
   async handle(command:ICommand, context:Context ):Promise<CommandResult>{

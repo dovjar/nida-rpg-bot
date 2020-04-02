@@ -1,5 +1,8 @@
 import { IMessageParser, ICommand } from '../../interfaces';
-import { CharPrintCommand, PrintCommandsEnum } from './print';
+import { PrintCommandsEnum } from "../../commands/char/CharPrintCommand";
+import { CharPrintCommand } from "../../commands/char/CharPrintCommand";
+import { CharAddCombatSkillCommand } from '../../commands/char/CharAddCombatSkillCommand';
+import { CharRemoveCombatSkillCommand } from '../../commands/char/CharRemoveCombatSkillCommand';
 
 export const commandParser:IMessageParser = {
   priority:0,
@@ -14,28 +17,4 @@ export const commandParser:IMessageParser = {
     return null;
   }
 }
-export class CharAddCombatSkillCommand implements ICommand{
 
-  constructor( name:string, lvl:number, attack:string, defense:string) {
-    this.skillName = name;
-    this.lvl = lvl;
-    this.attack = attack;
-    this.defense = defense;
-  }
-
-  skillName: string;
-  lvl: number;
-
-  attack:string;
-  defense:string;
-}
-
-// tslint:disable-next-line: max-classes-per-file
-export class CharRemoveCombatSkillCommand implements ICommand{
-
-  constructor(name:string) {
-    this.skillName = name;
-  }
-
-  skillName: string;
-}

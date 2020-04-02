@@ -1,6 +1,6 @@
 import { ICommandHandler, ICommand, CommandResult } from '../../interfaces';
 import { playersManager } from '../../playersManager';
-import { CharPrintCommand, PrintCommandsEnum } from '../../commands/char/print';
+import { CharPrintCommand, PrintCommandsEnum } from "../../commands/char/CharPrintCommand";
 import { CharProps } from '../../models/char';
 import WordTable from 'word-table';
 import { Context } from '../../context';

@@ -7,7 +7,7 @@ import { contextManager } from './context';
 
 const defaultOptions:IHandlerOptions={
   prefix:"!",
-  commandsPath:__dirname +"/commands",
+  commandsPath:__dirname +"/messageParsers",
   handlersPath:__dirname +"/handlers"
 }
 

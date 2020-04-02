@@ -1,4 +1,5 @@
 import { IMessageParser, ICommand } from '../../interfaces';
+import { DebugResetComand } from '../../commands/context/DebugResetComand';
 
 export const commandParser:IMessageParser = {
   priority:0,
@@ -10,5 +11,4 @@ export const commandParser:IMessageParser = {
     return null;
   }
 }
-export class DebugResetComand implements ICommand{
-}
+

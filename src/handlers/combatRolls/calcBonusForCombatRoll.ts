@@ -1,5 +1,5 @@
 import { ICommandHandler, ICommand, CommandResult, SimpleRedirectResult } from '../../interfaces';
-import { CalcBonusForCombatRollCommand } from '../../commands/combatRolls/roll';
+import { CalcBonusForCombatRollCommand } from "../../commands/roll/CalcBonusForCombatRollCommand";
 import { Context } from '../../context';
 import { playersManager } from '../../playersManager';
 

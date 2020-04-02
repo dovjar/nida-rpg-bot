@@ -1,9 +1,11 @@
 import { IMessageParser, ICommand } from '../../interfaces';
+import { CalcBonusForCombatRollCommand } from '../../commands/roll/CalcBonusForCombatRollCommand';
+import { CombatRollCommand } from '../../commands/roll/CombatRollCommand';
 
 export const commandParser:IMessageParser = {
   priority:0,
   async createCommand(cut:string):Promise<ICommand[]>{
-    const args = cut.match(/c\s*([a=zA-Z_0-9]*)?\s*(([+-])?(\d+))?/i);
+    const args = cut.match(/c(?=\s+)\s+([a-zA-Z0-9_]+)?\s*(([+-])?(\d+))?/i);
     if (args){
         const mod = parseInt(args[4],10) * ((args[3] || '+') ==='+'? 1:-1) || 0;
         const cmd=new CombatRollCommand(mod);
@@ -19,20 +21,4 @@ export const commandParser:IMessageParser = {
     return null;
   }
 }
-export class CalcBonusForCombatRollCommand implements ICommand{
-  combatRollCommand:CombatRollCommand;
-  name:string;
-  constructor(combatRollCommand:CombatRollCommand, name:string){
-    this.combatRollCommand = combatRollCommand;
-    this.name = name;
-  }
 
-}
-// tslint:disable-next-line: max-classes-per-file
-export class CombatRollCommand implements ICommand{
-
-  constructor( mod:number) {
-    this.mod = mod;
-  }
-  mod: number;userName: string;
-}

@@ -1,4 +1,5 @@
 import { IMessageParser, ICommand } from '../../interfaces';
+import { DebugCheatDicesComand } from '../../commands/context/DebugCheatDicesComand';
 
 export const commandParser:IMessageParser = {
   priority:0,
@@ -10,10 +11,4 @@ export const commandParser:IMessageParser = {
     return null;
   }
 }
-export class DebugCheatDicesComand implements ICommand{
 
-    constructor(dices:number[]) {
-        this.dices = dices;
-    }
-    dices:number[];
-}

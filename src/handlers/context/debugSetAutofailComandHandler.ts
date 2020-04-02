@@ -1,6 +1,6 @@
 import { ICommandHandler, ICommand, CommandResult } from '../../interfaces';
 import { Context } from '../../context';
-import { DebugSetAutofailComand } from '../../commands/context/setAutofail';
+import { DebugSetAutofailComand } from "../../commands/context/DebugSetAutofailComand";
 
 export const commandHandler:ICommandHandler = {
   async handle(command:ICommand, context:Context ):Promise<CommandResult>{

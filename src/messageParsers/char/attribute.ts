@@ -1,4 +1,5 @@
 import { IMessageParser, ICommand } from '../../interfaces';
+import { CharAttributeCommand } from '../../commands/char/CharAttributeCommand';
 
 export const commandParser:IMessageParser = {
   priority:0,
@@ -9,12 +10,4 @@ export const commandParser:IMessageParser = {
     return null;
   }
 }
-export class CharAttributeCommand implements ICommand{
 
-  constructor(attr:string, lvl:number) {
-    this.attr = attr;
-    this.lvl = lvl;
-  }
-  lvl: number;
-  attr: string;
-}

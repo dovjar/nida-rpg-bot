@@ -1,5 +1,5 @@
 import { ICommandHandler, ICommand, CommandResult } from '../../interfaces';
-import { CharAttributeCommand } from '../../commands/char/attribute';
+import { CharAttributeCommand } from "../../commands/char/CharAttributeCommand";
 import { playersManager } from '../../playersManager';
 import { Context } from '../../context';
 

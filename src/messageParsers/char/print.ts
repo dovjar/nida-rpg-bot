@@ -1,4 +1,5 @@
 import { IMessageParser, ICommand } from '../../interfaces';
+import { CharPrintCommand, PrintCommandsEnum } from '../../commands/char/CharPrintCommand';
 
 export const commandParser:IMessageParser = {
   priority:0,
@@ -14,19 +15,4 @@ export const commandParser:IMessageParser = {
 
     return null;
   }
-}
-export class CharPrintCommand implements ICommand{
-
-  constructor(subcommand:PrintCommandsEnum) {
-    this.subcommand = subcommand;
-
-  }
-  subcommand: PrintCommandsEnum;
-
-}
-
-export enum PrintCommandsEnum {
-  attr='attr',
-  combat='combat',
-  help ='help'
 }

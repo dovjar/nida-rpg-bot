@@ -1,5 +1,5 @@
 import { ICommandHandler, ICommand, CommandResult } from '../interfaces';
-import { HelpCommand } from '../commands/helpCommand';
+import { HelpCommand } from '../messageParsers/helpCommand';
 import { Context } from '../context';
 
 export const commandHandler:ICommandHandler = {

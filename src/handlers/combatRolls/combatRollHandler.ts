@@ -1,5 +1,5 @@
 import { ICommandHandler, ICommand, CommandResult } from '../../interfaces';
-import { CombatRollCommand } from '../../commands/combatRolls/roll';
+import { CombatRollCommand } from "../../commands/roll/CombatRollCommand";
 import { decorateCombatRoll } from '../../decorators';
 import { Context } from '../../context';
 
