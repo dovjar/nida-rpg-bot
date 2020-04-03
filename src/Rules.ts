@@ -1,5 +1,26 @@
+export enum SubLocationEnum{
+  RandomHead=1,RandomBody=2, RandomLeftArm=3, RandomLightArm=4, RandomLeftLeg=5, RandomRightLeg=6,
+  HeadScull=11, HeadFace=13,HeadNeck=15, HeadEye=16,
+  BodyFlesh =21,BodyVital=25,
+  ArmFlesh = 31, ArmJoint = 36,
+  LegFlesh = 41, LegJoint = 45
+
+}
+export enum LocationEnum{
+  head=1,body=2, arm=3, leg=4, random=0
+}
+
+
+
 export class Rules {
-    static locations = ['Head', 'Body', 'LArm', 'RArm', 'LLeg', 'RLeg'];
+
+    static getLocation=(loc:LocationEnum, roll:number)=>{
+      return SubLocationEnum[roll+ loc *10 ] ||
+             SubLocationEnum[roll-1+ loc *10 ] ||
+             SubLocationEnum[roll-3+ loc *10 ] ||
+             SubLocationEnum[roll-4+ loc *10 ] ||
+             SubLocationEnum[roll-5+ loc *10 ];
+    }
 
     static subLocations = {
       Head: {
@@ -180,9 +201,6 @@ export class Rules {
     }
     static getMagicMisfortune(roll, type) {
       return this[`magicMisfortune${type}`][roll];
-    }
-    static getLocation(roll) {
-      return this.locations[roll - 1];
     }
 
     static getSubLocation(roll, location) {

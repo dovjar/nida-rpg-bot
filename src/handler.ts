@@ -83,6 +83,7 @@ export class MessageHandler{
                 if (result){
                   console.log(`command was handled by ${handler.file}`);
                   message.reply(`${context.cheatsEnabled? '**CHEATER** ':''}${result.message}`);
+                  console.log(`${context.cheatsEnabled? '**CHEATER** ':''}${result.message}`);
                   cmd.result = result;
                   context.insertHistory(cmd);
                   if (isIHaveTheCommand(result)){
