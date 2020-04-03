@@ -61,46 +61,48 @@ export class MessageHandler{
   private handlerDescriptors:IHandlerDescriptor[] = new Array<IHandlerDescriptor>();
   public subscribe(bot: Client){
     bot.on('message', async (message:Message) => {
-      if(message.content.startsWith(this.options.prefix)){
-        const context = contextManager.getContext(message.member.user.id);
-        console.log(message.content);
-        const cut = message.content.substring(this.options.prefix.length).trim();
+      if(!message.content.startsWith(this.options.prefix)){
+        return;
+      }
 
-        for (const parser of this.messageParsers) {
-          const commands=await parser.createCommand(cut);
-          if(commands!=null)
-          {
-            let idx=0;
-            while(idx<commands.length){
-              const cmd = commands[idx];
-              console.log(`command received: ${cmd.constructor.name}= ${JSON.stringify(cmd)}`);
-              for(const handler of this.handlerDescriptors){
-                try{
-                  const result = await handler.handler.handle(cmd,context);
-                  if (result){
-                    console.log(`command was handled by ${handler.file}`);
-                    message.reply(`${context.cheatsEnabled? '**CHEATER** ':''}${result.message}`);
-                    cmd.result = result;
-                    context.insertHistory(cmd);
-                    if (isIHaveTheCommand(result)){
-                      (result as IHaveTheCommand).commands.forEach(t=>{
-                        console.log(`new command ${t.constructor.name} was produced by ${handler.file}`);
-                        commands.push(t);
-                      });
-                    }
+      const context = contextManager.getContext(message.member.user.id);
+      console.log(message.content);
+      const cut = message.content.substring(this.options.prefix.length).trim();
+
+      for (const parser of this.messageParsers) {
+        const commands=await parser.createCommand(cut);
+        if(commands!=null)
+        {
+          let idx=0;
+          while(idx<commands.length){
+            const cmd = commands[idx];
+            console.log(`command received: ${cmd.constructor.name}= ${JSON.stringify(cmd)}`);
+            for(const handler of this.handlerDescriptors){
+              try{
+                const result = await handler.handler.handle(cmd,context);
+                if (result){
+                  console.log(`command was handled by ${handler.file}`);
+                  message.reply(`${context.cheatsEnabled? '**CHEATER** ':''}${result.message}`);
+                  cmd.result = result;
+                  context.insertHistory(cmd);
+                  if (isIHaveTheCommand(result)){
+                    (result as IHaveTheCommand).commands.forEach(t=>{
+                      console.log(`new command ${t.constructor.name} was produced by ${handler.file}`);
+                      commands.push(t);
+                    });
                   }
                 }
-                catch(exception){
-                  console.log(exception);
-                  message.reply(`:unamused: something goes wrong\n${exception.message}`);
-                }
               }
-              idx++;
+              catch(exception){
+                console.log(exception);
+                message.reply(`:unamused: something goes wrong\n${exception.message}`);
+              }
             }
-            break;
+            idx++;
           }
-
+          break;
         }
+
       }
 
     });

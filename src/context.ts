@@ -24,7 +24,13 @@ export class Context{
     rollMany(dices:number, sides=6): number[]{
         return [...Array(dices)].map(() => this.rollOne(sides));
     };
-
+    explode = (arr) => {
+        let newArr = [...Array(arr.filter((el) => el === 6).length)].map(() => this.rollOne());
+        if (newArr.some((el) => el === 6)) {
+          newArr = [...newArr, ...this.explode(newArr)];
+        }
+        return newArr;
+      };
     /**
      * Getter userId
      * @return {string}
