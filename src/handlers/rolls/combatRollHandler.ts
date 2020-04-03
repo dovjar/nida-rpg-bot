@@ -19,7 +19,7 @@ export const commandHandler:ICommandHandler = {
     const showSuccess=():string => isSuccess?`**critical success**`:'';
     const showFailure=():string => isFailure?`**critical failure**`:'';
     const showAutoFail=():string => isAutoFail?`**autofail**`:'';
-    return new CombatRollResult(`[${decorateCombatRoll(roll)}]=${initialSum} ${showMod()} ${showSuccess()}${showFailure()}${showAutoFail()}`, roll, command.mod);
+    return new CombatRollResult(`Roll [${decorateCombatRoll(roll)}]=${initialSum} ${showMod()} ${showSuccess()}${showFailure()}${showAutoFail()}`, roll, command.mod);
   }
 }
 

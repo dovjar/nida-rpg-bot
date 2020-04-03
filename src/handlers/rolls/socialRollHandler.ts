@@ -20,7 +20,7 @@ export const commandHandler:ICommandHandler = {
     const successDice = roll.filter((el) => el >= command.effectiveness).length;
     const showSkillIncrease =()=>successDice >= command.dices ? '***skill increase!***' : '';
     const showBotchFail=():string => isBotch?`**botch**`:'';
-    return new CommandResult(`[${decorateSocialRoll(roll,command.dices, command.effectiveness)}]=${successDice}; ${showBotchFail()}${showSkillIncrease()}`);
+    return new CommandResult(`Roll [${decorateSocialRoll(roll,command.dices, command.effectiveness)}]=${successDice}; ${showBotchFail()}${showSkillIncrease()}`);
   }
 }
 

@@ -27,7 +27,7 @@ export const commandHandler:ICommandHandler = {
       return sum > 7 ? SpellResultEnum.success : SpellResultEnum.failure;
     }
     const result = calcResult();
-    return new SpellRollResult(`[${decorateCombatRoll(roll)}] = ${successValue}; ${result} ${fortune()} ${misfortune()}`,
+    return new SpellRollResult(`Roll [${decorateCombatRoll(roll)}] = ${successValue}; ${result} ${fortune()} ${misfortune()}`,
                               roll,result, criticalRoll);
   }
 }

@@ -27,3 +27,10 @@ export const decorateSocialRoll = (roll, dices = 3, diff = 4) => {
   });
   return roll;
 };
+
+export const decorateDamageRoll = (roll:number[], ln:number) => roll.map((el) => {
+  if (el > (6 - ln)) {
+    return `**${el}**`;
+  }
+  return `~~${el}~~`;
+});

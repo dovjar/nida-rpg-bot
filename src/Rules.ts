@@ -10,7 +10,11 @@ export enum LocationEnum{
   head=1,body=2, arm=3, leg=4, random=0
 }
 
-
+export enum DamageEffectEnum{
+  T='T',
+  B='B',
+  C='C'
+}
 
 export class Rules {
 
