@@ -1,10 +1,8 @@
 import { ICommand, ICommandResult } from '../../interfaces';
-import { CombatRollResult } from '../../commandResults/CombatRollResult';
-import { CombatRollCommand } from '../roll/CombatRollCommand';
 export class LuckCommandCheckRerollResult implements ICommand {
-    prevResult: CombatRollResult;
-    newCommand: CombatRollCommand;
-    constructor(prev: CombatRollResult, newCommand: CombatRollCommand) {
+    prevResult: ICommandResult;
+    newCommand: ICommand;
+    constructor(prev: ICommandResult, newCommand: ICommand) {
         this.prevResult= prev;
         this.newCommand = newCommand;
     }

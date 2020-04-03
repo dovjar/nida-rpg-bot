@@ -9,6 +9,7 @@ export class SpellRollResult extends CommandResult {
     roll: number[];
     spellResult: SpellResultEnum;
     criticalRoll:number;
+    initialRol=()=>this.roll.reduce((a, b) => a + b, 0);
 }
 export enum SpellResultEnum{
     failure='failure',
