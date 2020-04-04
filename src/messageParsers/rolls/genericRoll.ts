@@ -6,8 +6,8 @@ import { GenericRollCommand } from '../../commands/roll/GenericRollCommand';
 export const commandParser:IMessageParser = {
   priority:-5,
   async createCommand(cut:string):Promise<ICommand[]>{
-    if (cut.startsWith('spell help'))
-      return [new HelpCommand(HelpTypeEnum.Spell)];
+    if (cut.startsWith('r help'))
+      return [new HelpCommand(HelpTypeEnum.GenericRoll)];
 
     const args = cut.match(/^(\d*)?[dD](\d*)?/i);
     if (args){

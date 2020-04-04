@@ -21,6 +21,8 @@ export const commandHandler:ICommandHandler = {
           return new CommandResult(luckHelp);
         case HelpTypeEnum.Location:
           return new CommandResult(locationHelp);
+        case HelpTypeEnum.GenericRoll:
+          return new CommandResult(genericRollHelp);
         default:
           return new CommandResult(genericHelp);
       }
@@ -28,6 +30,13 @@ export const commandHandler:ICommandHandler = {
   }
 }
 
+const genericRollHelp=`**location roll help**
+\`\`\`asciidoc
+!d                                - roll 1d6
+!4d                               - roll 4d6
+!d20                              - roll 1d20
+!4d12                             - roll 4d12
+\`\`\``;
 const locationHelp=`**location roll help**
 \`\`\`asciidoc
 !l                                - roll 1d6 for generic location
