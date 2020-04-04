@@ -1,12 +1,90 @@
 import { ICommandHandler, ICommand } from '../interfaces';
 import { CommandResult } from "../commandResults/CommandResult";
-import { HelpCommand } from '../messageParsers/helpCommand';
+import { HelpCommand, HelpTypeEnum } from "../commands/HelpCommand";
 import { Context } from '../context';
 
 export const commandHandler:ICommandHandler = {
   async handle(command:ICommand , context:Context):Promise<CommandResult>{
     if (command instanceof HelpCommand )
-      return new CommandResult("can't handle it");
+      switch(command.type){
+        case HelpTypeEnum.Combat:
+          return new CommandResult(combatHelp);
+        case HelpTypeEnum.Player:
+          return new CommandResult(playerHelp);
+        case HelpTypeEnum.Damage:
+          return new CommandResult(damageHelp);
+        case HelpTypeEnum.Spell:
+          return new CommandResult(spellHelp);
+        case HelpTypeEnum.Social:
+          return new CommandResult(socialHelp);
+        case HelpTypeEnum.Luck:
+          return new CommandResult(luckHelp);
+        case HelpTypeEnum.Location:
+          return new CommandResult(locationHelp);
+        default:
+          return new CommandResult(genericHelp);
+      }
     return null;
   }
 }
+
+const locationHelp=`**location roll help**
+\`\`\`asciidoc
+!l                                - roll 1d6 for generic location
+!l head or !l h                   - roll 1d6 for head sub location
+!l body or !l b                   - roll 1d6 for body sub location
+!l arm or !l left arm or !l larm  - roll 1d6 for arm sub location
+!l leg or !l right leg or !l rleg - roll 1d6 for leg sub location
+\`\`\``;
+
+const luckHelp=`**luck help**
+\`\`\`asciidoc
+!luck         - rerolls last combat or social roll
+\`\`\``;
+
+const socialHelp=`**social roll help**
+\`\`\`asciidoc
+!s 4        - rolls 4d6 with effectiveness of 4 to calc success dices. 6 auto explode - allows to roll additional time
+!s 4 3      - rolls 4d6 with effectiveness of 3 i.e. specialization
+\`\`\``;
+
+const spellHelp=`**spell roll help**
+!spell      - rolls 3d6 to determine spell result, automatically resolves crit effects
+\`\`\``;
+
+const damageHelp=`**damage roll help**
+\`\`\`asciidoc
+!d 4 BBC  - rolls 4d6 to calc BBC damage
+\`\`\``;
+
+const playerHelp=`**character help**
+\`\`\`asciidoc
+!p attr           - prints attributes
+!p combat         - prints combat skills
+!p str 11         - set STR attribute to 11, can see all list of attributes with !p attr
+!p c axe 3        - set axe skill to lvl 3
+!p c bow 3 a=per  - set bow skill to lvl 3 and change attack attribute to PER
+!p c remove axe   - set axe skill to 0
+\`\`\``;
+
+const combatHelp=`**combat roll help**
+\`\`\`asciidoc
+!c                    - rolls 3d6
+!c+3 or !c +3         - rolls 3d6 +3
+!c-1 or !c -1         - rolls 3d6 -1
+!c axe                - computes axe skill [X=ref+skill lvl] and translates to !c +X
+!c axe-2 or !c axe -2 - computes axe skill adds and translates to !c +X
+!context autofail 8   - changes autofail to 8
+\`\`\``;
+
+const genericHelp=`**help**
+\`\`\`asciidoc
+character creation !p help
+combat roll        !c help
+social roll        !s help
+spell roll         !spell help
+damage roll        !d help
+location roll      !l help
+generic roll       !r help
+luck               !luck help
+\`\`\``;

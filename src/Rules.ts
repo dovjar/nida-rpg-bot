@@ -21,6 +21,7 @@ export class Rules {
     static getLocation=(loc:LocationEnum, roll:number)=>{
       return SubLocationEnum[roll+ loc *10 ] ||
              SubLocationEnum[roll-1+ loc *10 ] ||
+             SubLocationEnum[roll-2+ loc *10 ] ||
              SubLocationEnum[roll-3+ loc *10 ] ||
              SubLocationEnum[roll-4+ loc *10 ] ||
              SubLocationEnum[roll-5+ loc *10 ];

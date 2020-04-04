@@ -1,14 +1,13 @@
 import { IMessageParser, ICommand } from '../../interfaces';
-import { LuckCommand } from '../../commands/luck/LuckCommand';
+import { CharPrintCommand, PrintCommandsEnum } from '../../commands/char/CharPrintCommand';
 import { HelpCommand, HelpTypeEnum } from '../../commands/HelpCommand';
 
 export const commandParser:IMessageParser = {
-  priority:0,
+  priority:10,
   async createCommand(cut:string):Promise<ICommand[]>{
-    if (cut === 'luck')
-      return [new LuckCommand()];
-    if (cut === 'luck help')
-      return [new HelpCommand(HelpTypeEnum.Luck)];
+    if (cut.startsWith('p help'))
+      return [new HelpCommand(HelpTypeEnum.Player)];
+
     return null;
   }
 }
