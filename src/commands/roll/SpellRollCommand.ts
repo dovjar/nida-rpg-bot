@@ -4,3 +4,4 @@ export class SpellRollCommand implements ICommand {
   result: SpellRollResult;
 }
 
+
