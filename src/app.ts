@@ -2,11 +2,9 @@ import { MessageHandler } from './handler';
 import Discord = require('discord.js');
 import mongoose from 'mongoose';
 
-// tslint:disable-next-line:no-var-requires
-const CONFIG = require('./../config.json');
 const BOT = new Discord.Client();
 
-mongoose.connect("mongodb://root:rootpassword@10.10.10.190:27017/discord?authSource=admin", {
+mongoose.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   }).catch((e)=> console.error(e));
@@ -18,7 +16,7 @@ db.once('open', () => {
     console.info('Mongo Connected');
 });
 
-BOT.login(CONFIG.token)
+BOT.login(process.env.DISCORD_API_KEY)
    .then(() => console.log('Successfully logged as', BOT.user.username))
    .catch((error) => console.log(error));
 
