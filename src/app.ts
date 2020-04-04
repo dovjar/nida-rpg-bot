@@ -1,7 +1,7 @@
 import { MessageHandler } from './handler';
 import Discord = require('discord.js');
 import mongoose from 'mongoose';
-import express from 'express';
+
 
 const BOT = new Discord.Client();
 
@@ -23,15 +23,6 @@ BOT.login(process.env.DISCORD_API_KEY)
 
 const HANDLER= new MessageHandler();
 HANDLER.subscribe(BOT);
-
-const app = express();
-app.get('/', (req, res) => res.send('Kill all humans! all bots unite!!'));
-
-app.get('*', (_req, res) => {
-  res.status(404).send('ERROR 404');
-});
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`listening on port ${port}!`));
 
 
 
