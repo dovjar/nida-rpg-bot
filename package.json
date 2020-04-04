@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/app.js",
   "scripts": {
-    "start": "npm run serve",
+    "bot": "npm run build && npm run serve",
     "build": "npm run clean && npm run tsc",
     "clean": "cleandir dist/",
     "serve": "node dist/app.js",
