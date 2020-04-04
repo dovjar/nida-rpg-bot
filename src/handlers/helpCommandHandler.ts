@@ -48,7 +48,9 @@ const locationHelp=`**location roll help**
 
 const luckHelp=`**luck help**
 \`\`\`asciidoc
-!luck         - rerolls last combat or social roll
+!luck         - rerolls last combat or spell roll
+!luck 2       - only for social, rerolls 2 dices of last social roll
+!luck 3       - only for social, rerolls 3 dices of last social roll
 \`\`\``;
 
 const socialHelp=`**social roll help**

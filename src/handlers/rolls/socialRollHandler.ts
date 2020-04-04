@@ -4,6 +4,7 @@ import { decorateSocialRoll } from '../../decorators';
 import { Context } from '../../context';
 import { SocialRollCommand } from '../../commands/roll/SocialRollCommand';
 import { SocialRollResult } from '../../commandResults/SocialRollResult';
+import { Rules } from '../../Rules';
 
 export const commandHandler:ICommandHandler = {
   async handle(command:ICommand, context:Context ):Promise<CommandResult>{
@@ -11,16 +12,17 @@ export const commandHandler:ICommandHandler = {
       return null;
 
     let roll = context.rollMany(command.dices);
-    const botchNum = roll.filter((el) => el === 1).length;
-    const successNum = roll.filter((el) => el >= command.effectiveness).length;
-    const isBotch = botchNum >= successNum;
+    const isBotch = Rules.socialIsBotch(roll, command.effectiveness);
 
     if (!isBotch) {
       roll = [...roll, ...context.explode(roll)];
     }
-    const successDice = roll.filter((el) => el >= command.effectiveness).length;
-    return new SocialRollResult(`Roll ${command.dices}D6 [${decorateSocialRoll(roll,command.dices, command.effectiveness)}]=${successDice}`,
-                                roll,command.effectiveness, isBotch);
+    const successDice = Rules.socialSuccessNum(roll, command.effectiveness);
+    const showSkillIncrease =()=>successDice >= command.dices ? '***skill increase!***' : '';
+    const showBotchFail=():string => isBotch?`**botch**`:'';
+
+    return new SocialRollResult(`Roll ${command.dices}D6 [effectiveness ${command.effectiveness}] [${decorateSocialRoll(roll,command.dices, command.effectiveness)}]=${successDice} ${showBotchFail()}${showSkillIncrease()}`,
+                                roll,command.effectiveness, isBotch, successDice, command.dices);
   }
 }
 

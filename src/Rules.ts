@@ -17,7 +17,15 @@ export enum DamageEffectEnum{
 }
 
 export class Rules {
-
+    static socialIsBotch(roll:number[], effectiveness:number){
+      return this.socialBotchNum(roll)>=this.socialSuccessNum(roll,effectiveness);
+    }
+    static socialSuccessNum(roll:number[], effectiveness:number):number{
+      return roll.filter((el) => el >= effectiveness).length;
+    }
+    static socialBotchNum(roll:number[]):number{
+      return roll.filter((el) => el === 1).length;
+    }
     static getLocation=(loc:LocationEnum, roll:number)=>{
       return SubLocationEnum[roll+ loc *10 ]  ||
              SubLocationEnum[roll-1+ loc *10 ] ||
