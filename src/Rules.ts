@@ -1,5 +1,5 @@
 export enum SubLocationEnum{
-  RandomHead=1,RandomBody=2, RandomLeftArm=3, RandomLightArm=4, RandomLeftLeg=5, RandomRightLeg=6,
+  RandomHead=1,RandomBody=2, RandomLeftArm=3, RandomRightArm=4, RandomLeftLeg=5, RandomRightLeg=6,
   HeadScull=11, HeadFace=13,HeadNeck=15, HeadEye=16,
   BodyFlesh =21,BodyVital=25,
   ArmFlesh = 31, ArmJoint = 36,
@@ -19,65 +19,36 @@ export enum DamageEffectEnum{
 export class Rules {
 
     static getLocation=(loc:LocationEnum, roll:number)=>{
-      return SubLocationEnum[roll+ loc *10 ] ||
+      return SubLocationEnum[roll+ loc *10 ]  ||
              SubLocationEnum[roll-1+ loc *10 ] ||
              SubLocationEnum[roll-2+ loc *10 ] ||
              SubLocationEnum[roll-3+ loc *10 ] ||
              SubLocationEnum[roll-4+ loc *10 ] ||
              SubLocationEnum[roll-5+ loc *10 ];
     }
-
-    static subLocations = {
-      Head: {
-        1: 'Head - Scull: **+1T**',
-        2: 'Head - Scull: **+1T**',
-        3: 'Head - Face: **+1B**',
-        4: 'Head - Face: **+1B**',
-        5: 'Head - Neck: **+2B**',
-        6: 'Head - Eye: **+2C** this is usually unarmored',
-      },
-      Body: {
-        1: 'Body - Flesh: **+1T**',
-        2: 'Body - Flesh: **+1T**',
-        3: 'Body - Flesh: **+1T**',
-        4: 'Body - Flesh: **+1T**',
-        5: 'Body - Vital organs: **+2C**',
-        6: 'Body - Vital organs: **+2C**',
-      },
-      LArm: {
-        1: 'L.Arm - Flesh: **+1T**',
-        2: 'L.Arm - Flesh: **+1T**',
-        3: 'L.Arm - Flesh: **+1T**',
-        4: 'L.Arm - Flesh: **+1T**',
-        5: 'L.Arm - Flesh: **+1T**',
-        6: 'L.Arm - Joint or Tendon: **+2T and 50% to drop weapon**',
-      },
-      RArm: {
-        1: 'R.Arm - Flesh: **+1T**',
-        2: 'R.Arm - Flesh: **+1T**',
-        3: 'R.Arm - Flesh: **+1T**',
-        4: 'R.Arm - Flesh: **+1T**',
-        5: 'R.Arm - Flesh: **+1T**',
-        6: 'R.Arm - Joint or Tendon: **+2T and 50% to drop weapon**',
-      },
-      LLeg: {
-        1: 'L.Leg - Flesh: **+1T**',
-        2: 'L.Leg - Flesh: **+1T**',
-        3: 'L.Leg - Flesh: **+1T**',
-        4: 'L.Leg - Flesh: **+1T**',
-        5: 'L.Leg - Joint or Tendon: **+2T and 3-4 kneels or is off-balance, 5-6 falls down**',
-        6: 'L.Leg - Joint or Tendon: **+2T and 3-4 kneels or is off-balance, 5-6 falls down**',
-      },
-      RLeg: {
-        1: 'R.Leg - Flesh: **+1T**',
-        2: 'R.Leg - Flesh: **+1T**',
-        3: 'R.Leg - Flesh: **+1T**',
-        4: 'R.Leg - Flesh: **+1T**',
-        5: 'R.Leg - Joint or Tendon: **+2T and 3-4 kneels or is off-balance, 5-6 falls down**',
-        6: 'R.Leg - Joint or Tendon: **+2T and 3-4 kneels or is off-balance, 5-6 falls down**',
-      },
+    static getLocationEffect=(loc:string):string=>{
+      switch(loc){
+        case 'HeadFace':
+          return '+1B';
+        case 'HeadNeck':
+          return '+2B';
+        case 'HeadEye':
+          return '+2C this is usually unarmored';
+        case 'BodyVital':
+          return '+2C';
+        case 'ArmJoint':
+          return '+2T and 4-6 to drop weapon';
+        case 'LegJoint':
+          return '+2T and 3-4 kneels or is off-balance, 5-6 falls down';
+        case 'BodyFlesh':
+        case 'ArmFlesh':
+        case 'LegFlesh':
+        case 'HeadScull':
+          return '+1T';
+        default:
+          return null;
+      }
     }
-
     static meleeFortune17 = {
       1: 'Victim loses weapon',
       2: '+2 Luck',
@@ -208,7 +179,4 @@ export class Rules {
       return this[`magicMisfortune${type}`][roll];
     }
 
-    static getSubLocation(roll, location) {
-      return this.subLocations[location][roll];
-    }
   }

@@ -1,5 +1,4 @@
 import { IMessageParser, ICommand } from '../../interfaces';
-import { SpellRollCommand } from '../../commands/roll/SpellRollCommand';
 import { HelpCommand, HelpTypeEnum } from '../../commands/HelpCommand';
 import { GenericRollCommand } from '../../commands/roll/GenericRollCommand';
 
