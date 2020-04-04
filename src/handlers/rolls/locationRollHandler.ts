@@ -13,6 +13,6 @@ export const commandHandler:ICommandHandler = {
     const roll = context.rollOne();
     const location=Rules.getLocation(command.location, roll);
     const locationEffect = Rules.getLocationEffect(location)?`**${ Rules.getLocationEffect(location)}**`:'';
-    return new CommandResult(`location **${LocationEnum[command.location]}** Roll [${decorateCombatRoll([roll])}]=${location} ${locationEffect}`);
+    return new CommandResult(`location **${LocationEnum[command.location]}** Roll 1D6 [${decorateCombatRoll([roll])}]=${location} ${locationEffect}`);
   }
 }

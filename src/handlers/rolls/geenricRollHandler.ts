@@ -11,7 +11,7 @@ export const commandHandler:ICommandHandler = {
       return null;
 
     const roll = context.rollMany(command.dices, command.sides);
-    return new CommandResult(`Roll [${roll}]`);
+    return new CommandResult(`Roll ${command.dices}D${command.sides} [${roll}]`);
   }
 }
 

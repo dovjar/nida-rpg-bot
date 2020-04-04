@@ -26,7 +26,7 @@ export const commandHandler:ICommandHandler = {
         effects.push(effect);
       }
     }
-    return new CommandResult(`Roll [${decorateDamageRoll(roll, command.effects.length)}]=(${effects}), ${printDamageMsg(baseDamage, shock)}`);
+    return new CommandResult(`Roll ${command.dices}D6 [${decorateDamageRoll(roll, command.effects.length)}]=(${effects}), ${printDamageMsg(baseDamage, shock)}`);
   }
 }
 const printDamageMsg = (baseDamage, shock) => `Blow does **${baseDamage}** dmg and **${shock}** shock`;
