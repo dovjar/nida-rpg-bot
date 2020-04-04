@@ -1,8 +1,13 @@
 import { MessageHandler } from './handler';
 import Discord = require('discord.js');
 import mongoose from 'mongoose';
-const CONFIG = require('./../config.json') || {DISCORD_API_KEY:process.env.DISCORD_API_KEY, MONGODB_URL:process.env.MONGODB_URL};
-
+let CONFIG;
+try{
+  CONFIG = require('./../config.json');
+}
+catch{
+  CONFIG = {DISCORD_API_KEY:process.env.DISCORD_API_KEY, MONGODB_URL:process.env.MONGODB_URL};
+}
 const BOT = new Discord.Client();
 
 mongoose.connect(CONFIG.MONGODB_URL, {
