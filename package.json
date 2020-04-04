@@ -5,8 +5,10 @@
   "main": "dist/app.js",
   "scripts": {
     "start": "npm run build && npm run serve",
-    "build": "cleandir dist/ && tsc",
+    "build": "npm run clean && npm run tsc",
+    "clean": "cleandir dist/",
     "serve": "node dist/app.js",
+    "tsc":"./node_modules/.bin/tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tslint": "tslint --fix --project ./tsconfig.json"
   },
