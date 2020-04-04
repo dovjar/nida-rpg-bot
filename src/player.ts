@@ -1,4 +1,4 @@
-import { CharModel, CharDoc, CharProps, CombatSkillProps } from "./models/char";
+import { CharModel, CharDoc, CharProps, CombatSkillProps, CombatModeEnum as CombatModeEnum } from "./models/char";
 const newChar =(playerId:string, name:string)=>{
     return {
         playerId,
@@ -59,28 +59,28 @@ export class Player{
         await this.ensureCharLoaded();
         return this.char;
     }
-    async setCombatSkill(skillName: string, lvl: number, attack: string, defense: string):Promise<CombatSkillProps> {
+    async setCombatSkill(skillName: string, lvl: number, attr: string, combatMode:CombatModeEnum):Promise<CombatSkillProps> {
         await this.ensureCharLoaded();
-        let skill:CombatSkillProps = this.char.combatSkills.find(t=>t.name===skillName);
+        let skill:CombatSkillProps = this.char.combat.find(t=>t.name===skillName);
         if(!skill){
-            skill = {__v:0, name:skillName, lvl, attack:attack || 'ref',defense: defense || 'dex', masteries:new Array<string>()};
-            this.char.combatSkills.push(skill);
+            skill = {__v:0, name:skillName, lvl, attr:attr || 'ref', mode:combatMode || 'melee'};
+            this.char.combat.push(skill);
         }else{
-            if(lvl)
+            if(!isNaN(lvl))
                 skill.lvl = lvl;
-            if(attack)
-                skill.attack = attack;
-            if(defense)
-                skill.defense = defense;
+            if(attr!==undefined)
+                skill.attr = attr;
+            if(combatMode!==undefined)
+                skill.mode = CombatModeEnum[combatMode];
         }
         await this.saveChar();
         return skill;
     }
     async removeCombatSkill(skillName: string) {
         await this.ensureCharLoaded();
-        const idx = this.char.combatSkills.findIndex(t=>t.name===skillName);
+        const idx = this.char.combat.findIndex(t=>t.name===skillName);
         if(idx>=0){
-            this.char.combatSkills.splice(idx,1);
+            this.char.combat.splice(idx,1);
         }
         await this.saveChar();
     }

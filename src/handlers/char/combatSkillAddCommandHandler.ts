@@ -10,7 +10,7 @@ export const commandHandler:ICommandHandler = {
       return null;
 
     const player = playersManager.getPlayer(context.userId);
-    const skill = await player.setCombatSkill(command.skillName, command.lvl, command.attack, command.defense);
-    return new CommandResult(`skill ${skill.name} = ${skill.lvl} with defaults [a=${skill.attack}] [d=${skill.defense}]`);
+    const skill = await player.setCombatSkill(command.skillName, command.lvl, command.attack, command.mode);
+    return new CommandResult(`skill ${skill.name} = ${skill.lvl} with defaults [${skill.attr}]`);
   }
 }

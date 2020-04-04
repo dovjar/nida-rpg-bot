@@ -52,6 +52,10 @@ export const commandHandler:ICommandHandler = {
 
 const handleCombatLuck=(oldRoll: CombatRollCommand ):CommandResult=>{
     const newRoll = new CombatRollCommand(oldRoll.mod);
+    if (oldRoll.result.total() <=4)
+      return new CommandResult(`found spell roll [${oldRoll.result.roll}], cant spent luck on critical failure`);
+    if (oldRoll.result.total() >=17)
+      return new CommandResult(`found spell roll [${oldRoll.result.roll}], cant spent luck on critical success`);
     return new SimpleRedirectResult(`spending 2 points of luck to reroll last combat roll`,
       [
         newRoll,

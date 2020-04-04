@@ -33,9 +33,8 @@ const getAttributesAsAscii = (char: CharProps):string => {
 }
 
 const getCombatSkillsAsAscii = (char: CharProps) : string=> {
-  const rows = char.combatSkills.map((skill) => [skill.name, skill.lvl, `a=[${skill.attack}] d=[${skill.defense}]`, skill.masteries]);
-  const wt = new WordTable(['skill', 'lvl', 'defaults', 'masteries'],
-    rows);
+  const rows = char.combat.map((skill) => [skill.name, skill.lvl, `[${skill.attr}]`,skill.mode]);
+  const wt = new WordTable(['skill', 'lvl', 'defaults','mode'], rows);
 
   return wt.string();
 }
