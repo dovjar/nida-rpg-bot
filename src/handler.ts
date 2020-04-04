@@ -82,8 +82,10 @@ export class MessageHandler{
                 const result = await handler.handler.handle(cmd,context);
                 if (result){
                   console.log(`command was handled by ${handler.file}`);
-                  message.reply(`${context.cheatsEnabled? '**CHEATER** ':''}${result.message}`);
-                  console.log(`${context.cheatsEnabled? '**CHEATER** ':''}${result.message}`);
+                  if(result.message.trim()!==''){
+                    message.reply(`${context.cheatsEnabled? '**CHEATER** ':''}${result.message}`);
+                    console.log(`${context.cheatsEnabled? '**CHEATER** ':''}${result.message}`);
+                  }
                   cmd.result = result;
                   context.insertHistory(cmd);
                   if (isIHaveTheCommand(result)){

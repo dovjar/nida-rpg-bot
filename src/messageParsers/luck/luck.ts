@@ -5,10 +5,15 @@ import { HelpCommand, HelpTypeEnum } from '../../commands/HelpCommand';
 export const commandParser:IMessageParser = {
   priority:0,
   async createCommand(cut:string):Promise<ICommand[]>{
-    if (cut === 'luck')
-      return [new LuckCommand()];
+    const args=cut.match(/^luck\s*([123])?$/i);
+    if (args)
+      return [new LuckCommand(parseInt(args[1],10))];
+
+
     if (cut === 'luck help')
       return [new HelpCommand(HelpTypeEnum.Luck)];
+
+
     return null;
   }
 }

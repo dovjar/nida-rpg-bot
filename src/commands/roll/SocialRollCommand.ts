@@ -1,4 +1,5 @@
-import { ICommand, ICommandResult } from '../../interfaces';
+import { ICommand } from '../../interfaces';
+import { SocialRollResult } from '../../commandResults/SocialRollResult';
 
 export class SocialRollCommand implements ICommand {
   constructor(dices: number,effectiveness: number) {
@@ -7,5 +8,6 @@ export class SocialRollCommand implements ICommand {
   }
   dices: number;
   effectiveness: number;
-  result: ICommandResult;
+  result: SocialRollResult;
 }
+

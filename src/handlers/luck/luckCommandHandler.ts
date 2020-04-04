@@ -7,12 +7,25 @@ import { CombatRollCommand } from '../../commands/roll/CombatRollCommand';
 import { LuckCommandCheckRerollResult } from '../../commands/luck/LuckCommandCheckRerollResult';
 import { SpellRollCommand } from '../../commands/roll/SpellRollCommand';
 import { SpellResultEnum } from '../../commandResults/SpellRollResult';
+import { SocialRollCommand } from '../../commands/roll/SocialRollCommand';
+import { HelpCommand, HelpTypeEnum } from '../../commands/HelpCommand';
+import { SocialRollAggregateCommand } from '../../commands/roll/SocialRollAggregateCommand';
 
 export const commandHandler:ICommandHandler = {
   async handle(command:ICommand , context:Context):Promise<CommandResult>{
     if (command instanceof LuckCommand ){
         // find last roll
-        const lastRoll = context.commandsHistory.reverse().find(t=>t.command instanceof CombatRollCommand || t.command instanceof SpellRollCommand);
+        const lastRoll = context.commandsHistory.reverse().find(t=>
+          t.command instanceof CombatRollCommand ||
+          t.command instanceof SpellRollCommand ||
+          t.command instanceof SocialRollCommand ||
+          t.command instanceof LuckCommandCheckRerollResult);
+
+        if (!lastRoll)
+          return new CommandResult(`didn't found any suitable roll to spend luck`);
+        if(lastRoll.command instanceof LuckCommandCheckRerollResult)
+            return new CommandResult(`sorry, luck can be spent once per action`);
+
         if (lastRoll.command instanceof CombatRollCommand){
           const oldRoll = lastRoll.command as CombatRollCommand;
           const newRoll = new CombatRollCommand(oldRoll.mod);
@@ -35,7 +48,28 @@ export const commandHandler:ICommandHandler = {
               new LuckCommandCheckRerollResult(oldRoll.result,newRoll)
             ]);
         }
-        return new CommandResult(`didn't found any suitable roll to spend luck`);
+
+        if (lastRoll.command instanceof SocialRollCommand){
+          if(!command.dices)
+            return new SimpleRedirectResult(`found social roll, but was not specified how many dices needs to be to rerolled.`,
+              [
+                new HelpCommand(HelpTypeEnum.Luck)
+              ]);
+          const oldCommand = lastRoll.command as SocialRollCommand;
+          const roll=[...oldCommand.result.roll];
+          const minDices = roll.sort().slice(0, command.dices);
+          const newCommand = new SocialRollCommand(command.dices,oldCommand.effectiveness);
+          const aggregateResult = new SocialRollAggregateCommand(oldCommand, newCommand, minDices);
+          return new SimpleRedirectResult(`spending ${command.dices>1?2:1} points of luck to reroll last social roll, picked [${minDices}]`,
+          [
+            newCommand,
+            aggregateResult,
+            new LuckCommandCheckRerollResult(oldCommand.result,aggregateResult)
+          ]);
+
+
+        }
+
     }
     return null;
   }
