@@ -8,7 +8,7 @@
     "build": "npm run clean && npm run tsc",
     "clean": "cleandir dist/",
     "serve": "node dist/app.js",
-    "tsc":"tsc",
+    "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tslint": "tslint --fix --project ./tsconfig.json"
   },
@@ -26,6 +26,7 @@
     "@types/mongoose": "^5.7.8",
     "clean-dir": "^1.0.3",
     "discord.js": "^12.1.1",
+    "express": "^4.17.1",
     "mongoose": "^5.9.7",
     "ts-mongoose": "0.0.21",
     "word-table": "^1.0.3"
