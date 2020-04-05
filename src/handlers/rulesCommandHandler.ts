@@ -43,12 +43,9 @@ const listAllProperties = (obj, header, bold:number):string => {
   }
 const TOC=(obj)=>{
     const chapters=recursive(obj);
-    let line=`**TOC**`;
+    let line=`*TOC*`;
     chapters.forEach(t => {
-        if(isObject(obj[t]))
-            line+=`\nchapter\t\t${t}`;
-        else
-        line+=`\n${t}\t\t${obj[t]}`;
+        line+=`\n${t}`;
     });
     return line;
 
@@ -59,7 +56,7 @@ const recursive=(obj,prefix='', chapters=[])=>{
         for(const key of keys){
             const sub = obj[key];
             if (isObject(sub) && !isString(sub)){
-                chapters =[...chapters,['chapter',`${prefix}${key}`],...recursive(sub,`${prefix}${key}.`)];
+                chapters =[...chapters,`${prefix}${key}`,...recursive(sub,`${prefix}${key}.`)];
             }
         }
     }
