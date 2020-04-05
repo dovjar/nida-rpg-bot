@@ -47,10 +47,11 @@ attack mode:  all other names
 \`\`\``;
 const genericRollHelp=`**location roll help**
 \`\`\`asciidoc
-!d                                - roll 1d6
+!                                 - roll 1d6
 !4d                               - roll 4d6
 !d20                              - roll 1d20
 !4d12                             - roll 4d12
+! fortunes.ranged17               - roll 1d6 and display ranged fortunes17
 \`\`\``;
 const locationHelp=`**location roll help**
 \`\`\`asciidoc
