@@ -14,7 +14,10 @@ export const commandParser:IMessageParser = {
       const d=parseInt(args[2],10) || 1;
       const s=parseInt(args[3],10) || 6;
       if (args[4])
-        return [new RulesCommandFromRoll(args[4],d,s)]
+        if (args[4].startsWith('fortunes.') || args[4].startsWith('misfortunes.') )
+          return [new RulesCommandFromRoll(args[4],d,s)]
+        else
+          return null;
       return [new GenericRollCommand(d,s)]
     }
     return null;
