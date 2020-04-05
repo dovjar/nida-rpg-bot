@@ -86,6 +86,28 @@ export class Context{
 export class GlobalContext{
     autoFail:number = 7;
     npc:INpc[] = [];
+    rules = require('./../rules.json');
+    getMeleeFortune(roll, type) {
+        return this.rules.fortunes[`melee${type}`][roll];
+      }
+
+    getMeleeMisfortune(roll, type) {
+        return this.rules.misfortunes[`melee${type}`][roll];
+      }
+
+    getRangedFortune(roll, type) {
+        return this.rules.fortunes[`ranged${type}`][roll];
+      }
+
+    getRangedMisfortune(roll, type) {
+        return this.rules.misfortunes[`ranged${type}`][roll];
+      }
+    getMagicFortune(roll, type) {
+        return this.rules.fortunes[`magic${type}`][roll];
+      }
+    getMagicMisfortune(roll, type) {
+        return this.rules.misfortunes[`magic${type}`][roll];
+      }
 }
 
 

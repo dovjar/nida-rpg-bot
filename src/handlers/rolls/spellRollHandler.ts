@@ -3,6 +3,7 @@ import { CommandResult } from "../../commandResults/CommandResult";
 import { Context } from '../../context';
 import { SpellRollCommand } from '../../commands/roll/SpellRollCommand';
 import { SpellRollResult, SpellRollOutcomeEnum } from '../../commandResults/SpellRollResult';
+import { CriticalRollCommand, CriticalType } from '../../commands/roll/CriticalRollCommand';
 
 export const commandHandler:ICommandHandler = {
   async handle(command:ICommand, context:Context ):Promise<CommandResult>{
@@ -23,8 +24,8 @@ export const commandHandler:ICommandHandler = {
       return sum > 7 ? SpellRollOutcomeEnum.Success : SpellRollOutcomeEnum.Failure;
     }
     const outcome = calcResult();
-    const criticalRoll=(outcome===SpellRollOutcomeEnum.CriticalFailure || outcome===SpellRollOutcomeEnum.CriticalSuccess)?context.rollOne():0;
-    return new SpellRollResult(roll,outcome, criticalRoll,successValue);
+
+    return new SpellRollResult(roll,outcome, successValue);
   }
 }
 

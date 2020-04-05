@@ -19,3 +19,5 @@ export enum HelpTypeEnum {
   GenericRoll,
   Npc
 }
+
+

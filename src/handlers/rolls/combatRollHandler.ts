@@ -12,8 +12,7 @@ export const commandHandler:ICommandHandler = {
     const roll = context.rollMany(3);
     const initialSum= roll.reduce((a, b) => a + b, 0);
     const outcome = determineOutcome(initialSum,context.globalContext.autoFail);
-    const criticalRoll=(outcome===CombatRollOutcomeEnum.CriticalFailure || outcome===CombatRollOutcomeEnum.CriticalSuccess)?context.rollOne():0;
-    return new CombatRollResult(roll, command.mod, command.mode, outcome,criticalRoll );
+    return new CombatRollResult(roll, command.mod, command.mode, outcome);
   }
 }
 const determineOutcome=(sum:number, autofail:number)=>{

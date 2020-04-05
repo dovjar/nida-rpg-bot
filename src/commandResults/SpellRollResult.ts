@@ -1,23 +1,26 @@
 import { CommandResult } from "./CommandResult";
 import { decorateCombatRoll } from "../decorators";
-import { Rules } from "../Rules";
-export class SpellRollResult extends CommandResult {
-    constructor(roll: number[], spellResult: SpellRollOutcomeEnum, criticalRoll:number, successValue:number) {
+import { IHaveTheCommand, ICommand } from "../interfaces";
+import { CriticalType, CriticalRollCommand } from "../commands/roll/CriticalRollCommand";
+export class SpellRollResult extends CommandResult implements IHaveTheCommand {
+    constructor(roll: number[], spellResult: SpellRollOutcomeEnum,successValue:number) {
         super('');
         this.roll = roll;
         this.spellResult = spellResult;
-        this.criticalRoll = criticalRoll;
         this.successValue = successValue;
-        this.message = `Roll 3D6 [${decorateCombatRoll(roll)}] = ${successValue}; ${spellResult} ${this.fortune()}${this.misfortune()}`
+        this.message = `Roll 3D6 [${decorateCombatRoll(roll)}] = ${successValue}; ${spellResult}`
+        if(spellResult === SpellRollOutcomeEnum.CriticalFailure || spellResult === SpellRollOutcomeEnum.CriticalSuccess)
+            this.commands = [ (spellResult===SpellRollOutcomeEnum.CriticalFailure)?
+                    new CriticalRollCommand(CriticalType.MagicMisfortune, this.initialRol()):
+                    new CriticalRollCommand(CriticalType.MagicFortune,this.initialRol())]
+
     }
+    commands: ICommand[];
     roll: number[];
     spellResult: SpellRollOutcomeEnum;
-    criticalRoll:number;
     successValue:number;
     initialRol=()=>this.roll.reduce((a, b) => a + b, 0);
 
-    fortune=()=>this.spellResult=== SpellRollOutcomeEnum.CriticalSuccess? Rules.getMagicFortune(this.criticalRoll, this.initialRol()):``;
-    misfortune=()=>this.spellResult=== SpellRollOutcomeEnum.CriticalFailure? Rules.getMagicMisfortune(this.criticalRoll, this.initialRol()):``;
 }
 export enum SpellRollOutcomeEnum{
     Failure='failure',

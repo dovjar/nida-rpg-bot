@@ -115,4 +115,6 @@ damage roll        !d help
 location roll      !l help
 generic roll       !r help
 luck               !luck help
+rules              !rules
+rules - chapter    !rules fortunes.melee17
 \`\`\``;

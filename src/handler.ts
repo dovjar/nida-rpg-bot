@@ -90,8 +90,10 @@ export class MessageHandler{
                   context.insertHistory(cmd);
                   if (isIHaveTheCommand(result)){
                     (result as IHaveTheCommand).commands.forEach(t=>{
-                      console.log(`new command ${t.constructor.name} was produced by ${handler.file}`);
-                      commands.push(t);
+                      if(t){
+                        console.log(`new command ${t.constructor.name} was produced by ${handler.file}`);
+                        commands.push(t);
+                      }
                     });
                   }
                 }
