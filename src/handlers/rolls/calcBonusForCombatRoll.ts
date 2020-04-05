@@ -19,8 +19,9 @@ export const commandHandler:ICommandHandler = {
     const npcSkillName = command.name.substr(idx+1,command.name.length - idx);
     const npc = context.globalContext.npc.find(t=>t.name === npcName);
     if (npc){
-      const npcSkill = npc.skills.find(t=>t.name === npcSkillName);
-      if (npcSkill){
+      const npcSkill = npc.skills.find(t=>t.name === npcSkillName) || npc.skills[0];
+      if (npcSkill)
+      {
         command.combatRollCommand.mod += npcSkill.lvl;
         switch(npcSkillName){
           case "d":
@@ -38,11 +39,7 @@ export const commandHandler:ICommandHandler = {
             command.combatRollCommand.mode = CombatModeEnum.melee;
             break;
         }
-        return new SimpleRedirectResult(`found npc ${npcName} skill ${npcSkillName}=${npcSkill.lvl} assuming it is ${command.combatRollCommand.mode} action **total mod**=${command.combatRollCommand.mod} rolling dices:`,
-                                        [command.combatRollCommand]);
-      } else {
-        command.combatRollCommand.mod += npc.skills[0].lvl;
-        return new SimpleRedirectResult(`found npc ${npcName} skill ${npc.skills[0].name}=${npc.skills[0].lvl} **total mod**=${command.combatRollCommand.mod} rolling dices:`,
+        return new SimpleRedirectResult(`found npc ${npcName} skill ${npcSkill.name}=${npcSkill.lvl} assuming it is ${command.combatRollCommand.mode} action **total mod**=${command.combatRollCommand.mod} rolling dices:`,
                                         [command.combatRollCommand]);
       }
     }
