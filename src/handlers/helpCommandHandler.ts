@@ -23,13 +23,28 @@ export const commandHandler:ICommandHandler = {
           return new CommandResult(locationHelp);
         case HelpTypeEnum.GenericRoll:
           return new CommandResult(genericRollHelp);
+          case HelpTypeEnum.Npc:
+            return new CommandResult(npcHelp);
         default:
           return new CommandResult(genericHelp);
       }
     return null;
   }
 }
+const npcHelp=`**npc help**
+\`\`\`asciidoc
+!npc print                        - print all registered npc
+!npc kill all                     - remove all npc
+!npc kill boss                    - remove npc with name 'boss'
+!npc boss a=12 d=13+-1            - add npc boss with 2 skills [a=12] [d=12..14]
+!npc skendas[6] a=12 d=11         - add 6 npc skendas with 2 skills [a=12] [d=11]
 
+skill name defines combat mode
+defense mode: [d | evade | shield | parry | block]
+range mode:   [r |bow]
+attack mode:  all other names
+
+\`\`\``;
 const genericRollHelp=`**location roll help**
 \`\`\`asciidoc
 !d                                - roll 1d6
@@ -92,6 +107,7 @@ const combatHelp=`**combat roll help**
 const genericHelp=`**help**
 \`\`\`asciidoc
 character creation !p help
+npc                !npc help
 combat roll        !c help
 social roll        !s help
 spell roll         !spell help

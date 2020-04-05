@@ -16,5 +16,6 @@ export enum HelpTypeEnum {
   Social,
   Luck,
   Location,
-  GenericRoll
+  GenericRoll,
+  Npc
 }

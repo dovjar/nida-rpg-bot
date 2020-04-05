@@ -6,11 +6,12 @@ import { Context } from '../../context';
 import { CombatRollCommand } from '../../commands/roll/CombatRollCommand';
 import { LuckCommandCheckRerollResult } from '../../commands/luck/LuckCommandCheckRerollResult';
 import { SpellRollCommand } from '../../commands/roll/SpellRollCommand';
-import { SpellResultEnum } from '../../commandResults/SpellRollResult';
+import { SpellRollOutcomeEnum } from '../../commandResults/SpellRollResult';
 import { SocialRollCommand } from '../../commands/roll/SocialRollCommand';
 import { HelpCommand, HelpTypeEnum } from '../../commands/HelpCommand';
 import { SocialRollAggregateCommand } from '../../commands/roll/SocialRollAggregateCommand';
 import { SocialReRollCommand } from '../../commands/roll/SocialReRollCommand';
+import { SocialRollOutcomeEnum } from '../../commandResults/SocialRollResult';
 
 export const commandHandler:ICommandHandler = {
   async handle(command:ICommand , context:Context):Promise<CommandResult>{
@@ -64,9 +65,9 @@ const handleCombatLuck=(oldRoll: CombatRollCommand ):CommandResult=>{
 }
 
 const handleSpellLuck=(oldRoll:SpellRollCommand):CommandResult=>{
-  if (oldRoll.result.spellResult === SpellResultEnum.criticalFailure)
+  if (oldRoll.result.spellResult === SpellRollOutcomeEnum.CriticalFailure)
     return new CommandResult(`found spell roll [${oldRoll.result.roll}], cant spent luck on critical failure`);
-  if (oldRoll.result.spellResult === SpellResultEnum.criticalSuccess)
+  if (oldRoll.result.spellResult === SpellRollOutcomeEnum.CriticalSuccess)
     return new CommandResult(`found spell roll [${oldRoll.result.roll}], cant spent luck on critical success`);
   const newRoll = new SpellRollCommand();
   return new SimpleRedirectResult(`spending 2 points of luck to reroll last spell roll`,
@@ -79,7 +80,7 @@ const handleSocialLuck=(oldCommand: SocialRollCommand, dices:number ):CommandRes
   const roll=[...oldCommand.result.roll];
   const minDices = roll.sort().slice(0, dices);
   // on reroll do not explode if botch was rolled
-  const newCommand = new SocialReRollCommand(dices,oldCommand.effectiveness, !oldCommand.result.isBotch);
+  const newCommand = new SocialReRollCommand(dices,oldCommand.effectiveness, oldCommand.result.outcome!==SocialRollOutcomeEnum.Botch);
   const aggregateResult = new SocialRollAggregateCommand(oldCommand, newCommand, minDices);
   return new SimpleRedirectResult(`spending ${dices>1?2:1} points of luck to reroll last social roll, picked [${minDices}]`,
   [

@@ -4,7 +4,8 @@ import { Context } from '../../context';
 import { LuckCommandCheckRerollResult as LuckCheckRerollResultCommand } from '../../commands/luck/LuckCommandCheckRerollResult';
 import { CombatRollResult } from '../../commandResults/CombatRollResult';
 import { SpellRollResult } from '../../commandResults/SpellRollResult';
-import { SocialRollResult } from '../../commandResults/SocialRollResult';
+import { SocialRollResult, SocialRollOutcomeEnum } from '../../commandResults/SocialRollResult';
+import { SocialAggregateRollResult } from '../../commandResults/SocialAggregateRollResult';
 
 const sentences = [`You are lucky man`,`leprechaun envy you`, `good karma`, `streak of luck`, `lady Luck smiles`, `wheel of fortune`];
 
@@ -25,5 +26,8 @@ const getRollResult=(result:ICommandResult)=>{
   if (result instanceof SpellRollResult)
     return result.initialRol();
   if (result instanceof SocialRollResult)
-    return result.roll.filter((el) => el >= result.effectiveness).length;
+    return result.outcome === SocialRollOutcomeEnum.Botch?-1: result.successDices ;
+  if (result instanceof SocialAggregateRollResult)
+    return result.outcome === SocialRollOutcomeEnum.Botch?-1: result.successDices ;
+
 }

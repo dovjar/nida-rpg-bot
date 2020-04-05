@@ -1,10 +1,8 @@
 import { ICommandHandler, ICommand } from '../../interfaces';
 import { CommandResult } from "../../commandResults/CommandResult";
-import { decorateCombatRoll } from '../../decorators';
 import { Context } from '../../context';
 import { SpellRollCommand } from '../../commands/roll/SpellRollCommand';
-import { Rules } from '../../Rules';
-import { SpellRollResult, SpellResultEnum } from '../../commandResults/SpellRollResult';
+import { SpellRollResult, SpellRollOutcomeEnum } from '../../commandResults/SpellRollResult';
 
 export const commandHandler:ICommandHandler = {
   async handle(command:ICommand, context:Context ):Promise<CommandResult>{
@@ -16,19 +14,17 @@ export const commandHandler:ICommandHandler = {
     const sum = roll.reduce((a, b) => a + b, 0);
 
     const successValue = roll.filter((el) => el > 3).length;
-    const criticalRoll=context.rollOne();
-    const fortune=()=>initialRollSum>=17? Rules.getMagicFortune(criticalRoll, initialRollSum):``;
-    const misfortune=()=>initialRollSum<=4? Rules.getMagicMisfortune(criticalRoll, initialRollSum):``;
-    const calcResult=():SpellResultEnum => {
+
+    const calcResult=():SpellRollOutcomeEnum => {
       if( initialRollSum<=4)
-        return SpellResultEnum.criticalFailure;
+        return SpellRollOutcomeEnum.CriticalFailure;
       if (initialRollSum >= 17)
-        return SpellResultEnum.criticalSuccess;
-      return sum > 7 ? SpellResultEnum.success : SpellResultEnum.failure;
+        return SpellRollOutcomeEnum.CriticalSuccess;
+      return sum > 7 ? SpellRollOutcomeEnum.Success : SpellRollOutcomeEnum.Failure;
     }
-    const result = calcResult();
-    return new SpellRollResult(`Roll 3D6 [${decorateCombatRoll(roll)}] = ${successValue}; ${result} ${fortune()} ${misfortune()}`,
-                              roll,result, criticalRoll);
+    const outcome = calcResult();
+    const criticalRoll=(outcome===SpellRollOutcomeEnum.CriticalFailure || outcome===SpellRollOutcomeEnum.CriticalSuccess)?context.rollOne():0;
+    return new SpellRollResult(roll,outcome, criticalRoll,successValue);
   }
 }
 

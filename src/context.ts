@@ -1,4 +1,5 @@
 import { ICommand } from "./interfaces";
+import { INpc } from "./INpc";
 
 export interface ICommandRecord{
     command: ICommand,
@@ -84,7 +85,9 @@ export class Context{
 // tslint:disable-next-line: max-classes-per-file
 export class GlobalContext{
     autoFail:number = 7;
+    npc:INpc[] = [];
 }
+
 
 // tslint:disable-next-line: max-classes-per-file
 class ContextManager{
