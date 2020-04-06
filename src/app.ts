@@ -6,7 +6,7 @@ try{
   CONFIG = require('./../config.json');
 }
 catch(e){
-  CONFIG = {DISCORD_API_KEY:process.env.DISCORD_API_KEY, MONGODB_URL:process.env.MONGODB_URL, SERVERS:process.env.SERVERS};
+  CONFIG = {DISCORD_API_KEY:process.env.DISCORD_API_KEY, MONGODB_URL:process.env.MONGODB_URL, SERVERS:JSON.parse(process.env.SERVERS)};
 }
 const BOT = new Discord.Client();
 
