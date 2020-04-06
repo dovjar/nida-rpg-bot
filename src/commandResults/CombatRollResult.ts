@@ -1,9 +1,8 @@
 import { CommandResult } from "./CommandResult";
 import { CombatModeEnum } from "../models/char";
-import { Rules } from "../Rules";
 import { decorateCombatRoll } from "../decorators";
 import { IHaveTheCommand } from "../interfaces";
-import { CriticalRollCommand, CriticalType } from "../commands/roll/CriticalRollCommand";
+import { RulesCommandFromRoll } from "../commands/RulesCommandFromRoll";
 
 export enum CombatRollOutcomeEnum{
     Autofail,
@@ -22,15 +21,15 @@ export class CombatRollResult extends CommandResult implements IHaveTheCommand {
 
       if(this.outcome === CombatRollOutcomeEnum.CriticalSuccess){
         if (this.mode === CombatModeEnum.melee)
-          this.commands=[new CriticalRollCommand(CriticalType.MeleeFortune,this.initialRol())]
-        if (this.mode === CombatModeEnum.range)
-          this.commands=[new CriticalRollCommand(CriticalType.RangedFortune,this.initialRol())]
+          this.commands=[new RulesCommandFromRoll(`fortunes.melee${this.initialRol()}`)]
+        if (this.mode === CombatModeEnum.ranged)
+          this.commands=[new RulesCommandFromRoll(`fortunes.ranged${this.initialRol()}`)]
       }
       if(this.outcome === CombatRollOutcomeEnum.CriticalFailure){
         if (this.mode === CombatModeEnum.melee)
-          this.commands=[new CriticalRollCommand(CriticalType.MeleeMisFortune,this.initialRol())]
-        if (this.mode === CombatModeEnum.range)
-          this.commands=[new CriticalRollCommand(CriticalType.RangedMisFortune,this.initialRol())]
+          this.commands=[new RulesCommandFromRoll(`misfortunes.melee${this.initialRol()}`)]
+        if (this.mode === CombatModeEnum.ranged)
+          this.commands=[new RulesCommandFromRoll(`misfortunes.ranged${this.initialRol()}`)]
       }
   }
   commands: import("../interfaces").ICommand[];

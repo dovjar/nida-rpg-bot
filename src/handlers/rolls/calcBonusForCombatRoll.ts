@@ -33,7 +33,7 @@ export const commandHandler:ICommandHandler = {
             break;
           case "bow":
           case "r":
-            command.combatRollCommand.mode = CombatModeEnum.range;
+            command.combatRollCommand.mode = CombatModeEnum.ranged;
             break;
           default:
             command.combatRollCommand.mode = CombatModeEnum.melee;

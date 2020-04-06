@@ -52,6 +52,8 @@ const genericRollHelp=`**location roll help**
 !d20                              - roll 1d20
 !4d12                             - roll 4d12
 ! fortunes.ranged17               - roll 1d6 and display ranged fortunes17
+! fr17                            - translates to ! fortunes.ranged17
+! string                          - roll 1D6 ant look for result in !rules
 \`\`\``;
 const locationHelp=`**location roll help**
 \`\`\`asciidoc
@@ -86,13 +88,14 @@ const damageHelp=`**damage roll help**
 
 const playerHelp=`**character help**
 \`\`\`asciidoc
-!p attr           - prints attributes
-!p combat         - prints combat skills
-!p str 11         - set STR attribute to 11, can see all list of attributes with !p attr
-!p c axe 3        - set axe skill to lvl 3
-!p c bow a=per    - set bow skill attribute to PER
-!p c bow range    - set bow skill to be ranged, it will be used for different critical tables
-!p c remove axe   - set axe skill to 0
+!p attr            - prints attributes
+!p combat          - prints combat skills
+!p str 11          - set STR attribute to 11, can see all list of attributes with !p attr
+!p c axe 3         - set axe skill to lvl 3
+!p c bow a=per     - set bow skill attribute to PER
+!p c bow ranged    - set bow skill to be ranged, it will be used for different critical tables
+!p c parry defense - set parry skill to be defense
+!p c remove axe    - set axe skill to 0
 \`\`\``;
 
 const combatHelp=`**combat roll help**

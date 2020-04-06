@@ -98,6 +98,47 @@
             "5":"Lose Double Power",
             "6":"Lose Double Power"
           }
-
+    },
+    "locations":{
+      "random":{
+        "1":"Head",
+        "2":"Body",
+        "3":"Left arm",
+        "4":"Right arm",
+        "5":"Left leg",
+        "6":"Right leg"
+      },
+      "head":{
+        "1":"Head - Scull: **+1T**",
+        "2":"Head - Scull: **+1T**",
+        "3":"Head - Face: **+1B**",
+        "4":"Head - Face: **+1B**",
+        "5":"Head - Neck: **+2B**",
+        "6":"Head - Eye: **+2C** this is usually unarmored"
+      },
+      "body":{
+        "1":"Body - Flesh: **+1T**",
+        "2":"Body - Flesh: **+1T**",
+        "3":"Body - Flesh: **+1T**",
+        "4":"Body - Flesh: **+1T**",
+        "5":"Body - Vital organs: **+2C**",
+        "6":"Body - Vital organs: **+2C**"
+      },
+      "arm":{
+        "1":"m - Flesh: **+1T**",
+        "2":"m - Flesh: **+1T**",
+        "3":"m - Flesh: **+1T**",
+        "4":"m - Flesh: **+1T**",
+        "5":"m - Flesh: **+1T**",
+        "6":"m - Joint or Tendon: **+2T and 50% to drop weapon**"
+      },
+      "leg":{        "1":"Leg - Flesh: **+1T**",
+        "2":"Leg - Flesh: **+1T**",
+        "3":"Leg - Flesh: **+1T**",
+        "4":"Leg - Flesh: **+1T**",
+        "5":"Leg - Joint or Tendon: **+2T and 3-4 kneels or is off-balance, 5-6 falls down**",
+        "6":"Leg - Joint or Tendon: **+2T and 3-4 kneels or is off-balance, 5-6 falls down**"
+      }
     }
+
 }

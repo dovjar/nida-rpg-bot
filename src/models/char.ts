@@ -1,7 +1,7 @@
 import { createSchema, Type, typedModel, ExtractDoc, ExtractProps, } from 'ts-mongoose';
- export const CombatMode = ['melee', 'range', 'defense','unknown'] as const;
+ export const CombatMode = ['melee', 'ranged', 'defense','unknown'] as const;
 export enum CombatModeEnum{
-  melee='melee',range='range',defense='defense', unknown='unknown'
+  melee='melee',ranged='ranged',defense='defense', unknown='unknown'
 }
 export const CombatSchema = createSchema({
         name: Type.string({ required: true }),

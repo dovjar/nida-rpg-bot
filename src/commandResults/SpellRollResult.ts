@@ -1,7 +1,7 @@
 import { CommandResult } from "./CommandResult";
 import { decorateCombatRoll } from "../decorators";
 import { IHaveTheCommand, ICommand } from "../interfaces";
-import { CriticalType, CriticalRollCommand } from "../commands/roll/CriticalRollCommand";
+import { RulesCommandFromRoll } from "../commands/RulesCommandFromRoll";
 export class SpellRollResult extends CommandResult implements IHaveTheCommand {
     constructor(roll: number[], spellResult: SpellRollOutcomeEnum,successValue:number) {
         super('');
@@ -11,8 +11,8 @@ export class SpellRollResult extends CommandResult implements IHaveTheCommand {
         this.message = `Roll 3D6 [${decorateCombatRoll(roll)}] = ${successValue}; ${spellResult}`
         if(spellResult === SpellRollOutcomeEnum.CriticalFailure || spellResult === SpellRollOutcomeEnum.CriticalSuccess)
             this.commands = [ (spellResult===SpellRollOutcomeEnum.CriticalFailure)?
-                    new CriticalRollCommand(CriticalType.MagicMisfortune, this.initialRol()):
-                    new CriticalRollCommand(CriticalType.MagicFortune,this.initialRol())]
+                    new RulesCommandFromRoll(`misfortunes.magic${this.initialRol()}`):
+                    new RulesCommandFromRoll(`fortunes.magic${this.initialRol()}`)]
 
     }
     commands: ICommand[];

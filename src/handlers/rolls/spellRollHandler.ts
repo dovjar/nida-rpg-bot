@@ -3,7 +3,6 @@ import { CommandResult } from "../../commandResults/CommandResult";
 import { Context } from '../../context';
 import { SpellRollCommand } from '../../commands/roll/SpellRollCommand';
 import { SpellRollResult, SpellRollOutcomeEnum } from '../../commandResults/SpellRollResult';
-import { CriticalRollCommand, CriticalType } from '../../commands/roll/CriticalRollCommand';
 
 export const commandHandler:ICommandHandler = {
   async handle(command:ICommand, context:Context ):Promise<CommandResult>{
