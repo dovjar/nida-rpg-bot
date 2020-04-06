@@ -37,6 +37,8 @@ BOT.login(CONFIG.DISCORD_API_KEY)
 const HANDLER= new MessageHandler({commandsPath:null,handlersPath:null, prefix:null,
   servers:CONFIG.SERVERS});
 HANDLER.subscribe(BOT);
+console.log('subscribed to:');
+console.log(CONFIG.SERVERS);
 
 
 
