@@ -9,7 +9,8 @@ import { contextManager } from './context';
 const defaultOptions:IHandlerOptions={
   prefix:"!",
   commandsPath:__dirname +"/messageParsers",
-  handlersPath:__dirname +"/handlers"
+  handlersPath:__dirname +"/handlers",
+  servers:null
 }
 
 const getAllFiles = (dirPath:string, arrayOfFiles:string[]=null) => {
@@ -30,6 +31,11 @@ const getAllFiles = (dirPath:string, arrayOfFiles:string[]=null) => {
 export class MessageHandler{
   constructor(options:IHandlerOptions = defaultOptions) {
     this.options=options;
+    const keys = Object.keys(defaultOptions);
+    keys.forEach(t => {
+      if (!this.options[t])
+        this.options[t]=defaultOptions[t];
+    });
     const commands= new Array<IMessageParser>();
     getAllFiles(options.commandsPath).filter(file => file.slice(-3) === '.js').forEach((file) => {
       try {
@@ -61,6 +67,11 @@ export class MessageHandler{
   private handlerDescriptors:IHandlerDescriptor[] = new Array<IHandlerDescriptor>();
   public subscribe(bot: Client){
     bot.on('message', async (message:Message) => {
+      if (message.author.bot)
+        return;
+      if (this.options.servers && !this.options.servers.find(t=>t.server === message.guild.name && (t.channel === '*' || t.channel === (message.channel as any).name))){
+        return;
+      }
       if(!message.content.startsWith(this.options.prefix)){
         return;
       }

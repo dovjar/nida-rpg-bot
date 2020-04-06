@@ -49,7 +49,7 @@ export const commandHandler:ICommandHandler = {
     if (skill){
       command.combatRollCommand.mod += skill.lvl + char.attr[skill.attr];
       command.combatRollCommand.mode = CombatModeEnum[skill.mode];
-      return new SimpleRedirectResult(`found combat skill ${skill.name}=${skill.lvl} using attack ${skill.attr}=${char.attr[skill.attr]} **total mod**=${command.combatRollCommand.mod} rolling dices:`,
+      return new SimpleRedirectResult(`found combat skill ${skill.name}=${skill.lvl} using ${skill.attr}=${char.attr[skill.attr]} **total mod**=${command.combatRollCommand.mod} rolling dices:`,
                                       [command.combatRollCommand]);
     }
     return new SimpleRedirectResult(`error 404 - not found **${command.name}**, rolling dices`,

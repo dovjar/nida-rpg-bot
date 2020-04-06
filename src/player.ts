@@ -33,7 +33,7 @@ export class Player{
                 await this.char.save();
             }
         }
-        catch{
+        catch(e){
             throw new Error(`can't load a char from DB.`);
         }
     }

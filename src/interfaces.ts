@@ -1,9 +1,14 @@
 import { Context } from "./context";
+export interface IServerChannel{
+  server:string;
+  channel:string;
+}
 
 export interface IHandlerOptions{
   prefix:string,
   commandsPath:string,
-  handlersPath:string
+  handlersPath:string,
+  servers:IServerChannel[]
 }
 export interface ICommandHandler{
   handle(command:ICommand, context:Context):Promise<ICommandResult>;

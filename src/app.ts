@@ -5,8 +5,8 @@ let CONFIG;
 try{
   CONFIG = require('./../config.json');
 }
-catch{
-  CONFIG = {DISCORD_API_KEY:process.env.DISCORD_API_KEY, MONGODB_URL:process.env.MONGODB_URL};
+catch(e){
+  CONFIG = {DISCORD_API_KEY:process.env.DISCORD_API_KEY, MONGODB_URL:process.env.MONGODB_URL, SERVERS:process.env.SERVERS};
 }
 const BOT = new Discord.Client();
 
@@ -25,8 +25,17 @@ db.once('open', () => {
 BOT.login(CONFIG.DISCORD_API_KEY)
    .then(() => console.log('Successfully logged as', BOT.user.username))
    .catch((error) => console.log(error));
-
-const HANDLER= new MessageHandler();
+   BOT.on("ready", () => {
+    BOT.user.setPresence({
+      status:'dnd',
+      activity: {
+            name: 'my code',
+            type: 'WATCHING'
+        },
+    })
+});
+const HANDLER= new MessageHandler({commandsPath:null,handlersPath:null, prefix:null,
+  servers:CONFIG.SERVERS});
 HANDLER.subscribe(BOT);
 
 
