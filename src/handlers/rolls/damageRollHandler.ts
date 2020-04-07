@@ -26,8 +26,28 @@ export const commandHandler:ICommandHandler = {
         effects.push(effect);
       }
     }
-    return new CommandResult(`Roll ${command.dices}D6 [${decorateDamageRoll(roll, command.effects.length)}]=(${effects}), ${printDamageMsg(baseDamage, shock)}`);
+    const additionalEffects = [];
+    const additionalRoll = context.rollMany(command.additionalEffects.length);
+    for (let i = 0; i<additionalRoll.length;i++){
+      if (additionalRoll[i]>3){
+        const effect= command.additionalEffects[i];
+        const resolve = resolveShockAndBaseDmg(effect);
+        if (resolve && resolve.damage && effect) {
+          shock += resolve.shock || 0;
+          baseDamage += resolve.base || 0;
+        }
+        additionalEffects.push(effect);
+      }
+
+    }
+    return new CommandResult(`Roll ${command.dices}D6 [${decorateDamageRoll(roll, command.effects.length)}]=(${effects})${printAdditionalEffects(additionalEffects,additionalRoll)} ${printDamageMsg(baseDamage, shock)}`);
   }
+}
+const printAdditionalEffects=(additionalEffects,additionalRoll)=>{
+  if (additionalRoll && additionalRoll.length >0){
+    return `+ [${decorateDamageRoll(additionalRoll, 3)}]=(${additionalEffects})`;
+  }
+  return '';
 }
 const printDamageMsg = (baseDamage, shock) => `Blow does **${baseDamage}** dmg and **${shock}** shock`;
 const damageMap:IDamageType[] = [

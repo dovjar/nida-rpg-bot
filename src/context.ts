@@ -1,5 +1,6 @@
 import { ICommand } from "./interfaces";
 import { INpc } from "./INpc";
+import { isObject, isString } from "util";
 
 export interface ICommandRecord{
     command: ICommand,
@@ -84,9 +85,19 @@ export class Context{
 }
 // tslint:disable-next-line: max-classes-per-file
 export class GlobalContext{
+    constructor(rules,rulesAliasesMap ) {
+        this.rules = rules;
+        this.rulesAliasesMap = rulesAliasesMap;
+    }
     autoFail:number = 7;
     npc:INpc[] = [];
-    rules = require('./../rules.json');
+    rules:any;
+    rulesAliasesMap=[];
+    fogOfWarUserId: string;
+    findRuleChapterByAlias(alias:string){
+        return this.rulesAliasesMap.find(t=>t.alias === alias)?.chapter || alias;
+    }
+
     getMeleeFortune(roll, type) {
         return this.rules.fortunes[`melee${type}`][roll];
       }
@@ -113,12 +124,33 @@ export class GlobalContext{
 
 // tslint:disable-next-line: max-classes-per-file
 class ContextManager{
+    constructor() {
+        const rules = require('./../rules.json');
+        const rulesAliasesMap=[];
+        this.traverseObject(rules,rulesAliasesMap)
+        this.globalContext =  new GlobalContext(rules, rulesAliasesMap);
+    }
     localContexts={}
-    globalContext = new GlobalContext();
+    globalContext;
     getContext(userId:string):Context{
         if (!this.localContexts[userId])
             this.localContexts[userId]=new Context(this.globalContext, userId);
         return this.localContexts[userId];
+    }
+    traverseObject(obj,rulesAliasesMap, prefix=''){
+        if (isObject(obj) && !isString(obj)){
+            const keys = Object.keys(obj);
+            for(const key of keys){
+                if (key==='aliases'){
+                    for(const a of obj.aliases)
+                        rulesAliasesMap.push({alias:a,chapter:`${prefix.substring(0, prefix.length-1)}`});
+                }
+                const sub = obj[key];
+                if (isObject(sub) && !isString(sub)){
+                    this.traverseObject(sub,rulesAliasesMap, `${prefix}${key}.`);
+                }
+            }
+        }
     }
 }
 

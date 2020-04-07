@@ -11,8 +11,8 @@ export class SpellRollResult extends CommandResult implements IHaveTheCommand {
         this.message = `Roll 3D6 [${decorateCombatRoll(roll)}] = ${successValue}; ${spellResult}`
         if(spellResult === SpellRollOutcomeEnum.CriticalFailure || spellResult === SpellRollOutcomeEnum.CriticalSuccess)
             this.commands = [ (spellResult===SpellRollOutcomeEnum.CriticalFailure)?
-                    new RulesCommandFromRoll(`misfortunes.magic${this.initialRol()}`):
-                    new RulesCommandFromRoll(`fortunes.magic${this.initialRol()}`)]
+                    new RulesCommandFromRoll(`misfortunes.spell${this.initialRol()}`):
+                    new RulesCommandFromRoll(`fortunes.spell${this.initialRol()}`)]
 
     }
     commands: ICommand[];

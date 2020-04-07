@@ -9,8 +9,10 @@ export const commandHandler:ICommandHandler = {
       if (command instanceof RulesCommand){
         if (command.chapter==='')
             return new CommandResult(`**RULES**\n\`\`\`asciidoc\n${TOC(context.globalContext.rules)}\n\`\`\``)
-        else
-            return new CommandResult(`**RULES**\n\`\`\`asciidoc\n${listAllProperties(getSubChapter(context.globalContext.rules,command.chapter), command.chapter, command.bold)}\n\`\`\``)
+        else{
+            const chapter = context.globalContext.findRuleChapterByAlias( command.chapter);
+            return new CommandResult(`**RULES**\n\`\`\`asciidoc\n${listAllProperties(getSubChapter(context.globalContext.rules,chapter), command.chapter, command.bold)}\n\`\`\``)
+        }
       }
       return null;
     }
@@ -33,7 +35,7 @@ const listAllProperties = (obj, header, bold:number):string => {
     const keys = Object.keys(obj);
     keys.forEach(t => {
         if(isObject(obj[t]))
-            line+=`\nchapter\t\t${t}`;
+            line+=`\nchapter\t\t${t}${addAliases(t)}}`;
         else if (t===bold.toString())
             line+=`\n*${t}\t\t${obj[t]}*`;
         else
@@ -54,11 +56,19 @@ const recursive=(obj,prefix='', chapters=[])=>{
     if (isObject(obj) && !isString(obj)){
         const keys = Object.keys(obj);
         for(const key of keys){
+            if (key==='aliases')
+                continue;
             const sub = obj[key];
             if (isObject(sub) && !isString(sub)){
-                chapters =[...chapters,`${prefix}${key}`,...recursive(sub,`${prefix}${key}.`)];
+                chapters =[...chapters,`${prefix}${key}${addAliases(sub)}`,...recursive(sub,`${prefix}${key}.`)];
             }
         }
     }
     return chapters;
+}
+const addAliases =(obj)=>{
+    if(obj.aliases){
+       return `\t[${obj.aliases.reduce((a,b)=>a+b)}]`;
+    }
+    return '';
 }
