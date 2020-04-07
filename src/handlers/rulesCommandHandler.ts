@@ -11,7 +11,7 @@ export const commandHandler:ICommandHandler = {
             return new CommandResult(`**RULES**\n\`\`\`asciidoc\n${TOC(context.globalContext.rules)}\n\`\`\``)
         else{
             const chapter = context.globalContext.findRuleChapterByAlias( command.chapter);
-            return new CommandResult(`**RULES**\n\`\`\`asciidoc\n${listAllProperties(getSubChapter(context.globalContext.rules,chapter), command.chapter, command.bold)}\n\`\`\``)
+            return new CommandResult(`**RULES**\n\`\`\`asciidoc\n${listAllProperties(getSubChapter(context.globalContext.rules,chapter), chapter, command.bold)}\n\`\`\``)
         }
       }
       return null;
@@ -34,8 +34,11 @@ const listAllProperties = (obj, header, bold:number):string => {
     let line=`*${header}*`;
     const keys = Object.keys(obj);
     keys.forEach(t => {
+        if(t==='aliases')
+            return;
+
         if(isObject(obj[t]))
-            line+=`\nchapter\t\t${t}${addAliases(t)}}`;
+            line+=`\nchapter\t\t${t}${addAliases(t)}`;
         else if (t===bold.toString())
             line+=`\n*${t}\t\t${obj[t]}*`;
         else
