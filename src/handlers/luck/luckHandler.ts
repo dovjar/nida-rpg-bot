@@ -12,6 +12,7 @@ import { HelpCommand, HelpTypeEnum } from '../../commands/HelpCommand';
 import { SocialRollAggregateCommand } from '../../commands/roll/SocialRollAggregateCommand';
 import { SocialReRollCommand } from '../../commands/roll/SocialReRollCommand';
 import { SocialRollOutcomeEnum } from '../../commandResults/SocialRollResult';
+import { CombatRollOutcomeEnum } from '../../commandResults/CombatRollResult';
 
 export const commandHandler:ICommandHandler = {
   async handle(command:ICommand , context:Context):Promise<CommandResult>{
@@ -53,11 +54,11 @@ export const commandHandler:ICommandHandler = {
 
 const handleCombatLuck=(oldRoll: CombatRollCommand ):CommandResult=>{
     const newRoll = new CombatRollCommand(oldRoll.mod);
-    if (oldRoll.result.total() <=4)
-      return new CommandResult(`found spell roll [${oldRoll.result.roll}], cant spent luck on critical failure`);
-    if (oldRoll.result.total() >=17)
-      return new CommandResult(`found spell roll [${oldRoll.result.roll}], cant spent luck on critical success`);
-    return new SimpleRedirectResult(`spending 2 points of luck to reroll last combat roll`,
+    if (oldRoll.result.outcome === CombatRollOutcomeEnum.CriticalFailure)
+      return new CommandResult(`found combat roll [${oldRoll.result.roll}], cant spent luck on critical failure`);
+    if (oldRoll.result.outcome === CombatRollOutcomeEnum.CriticalSuccess)
+      return new CommandResult(`found combat roll [${oldRoll.result.roll}], cant spent luck on critical success`);
+    return new SimpleRedirectResult(`spending 2 points of luck to reroll last [${oldRoll.result.roll}] combat roll`,
       [
         newRoll,
         new LuckCommandCheckRerollResult(oldRoll.result,newRoll)
