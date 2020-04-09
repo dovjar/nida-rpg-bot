@@ -51,7 +51,7 @@ const printAdditionalEffects=(additionalEffects,additionalRoll)=>{
 }
 const printDamageMsg = (baseDamage, shock) => `Blow does **${baseDamage}** dmg and **${shock}** shock`;
 const damageMap:IDamageType[] = [
-  { damage: DamageEffectEnum.T, base: 1, shock: 3 },
+  { damage: DamageEffectEnum.T, base: 2, shock: 3 },
   { damage: DamageEffectEnum.B, base: 2, shock: 0 },
   { damage: DamageEffectEnum.C, base: 3, shock: 1 },
 ];
