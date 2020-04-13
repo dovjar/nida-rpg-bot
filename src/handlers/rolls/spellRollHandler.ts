@@ -9,22 +9,25 @@ export const commandHandler:ICommandHandler = {
     if (!(command instanceof SpellRollCommand ))
       return null;
 
-    const roll = context.rollMany(3);
-    const initialRollSum = roll.reduce((a, b) => a + b, 0);
-    const sum = roll.reduce((a, b) => a + b, 0);
+    const roll =context.rollMany(3);
 
-    const successValue = roll.filter((el) => el > 3).length;
+    const expRoll  = [...roll, ...context.explode(roll)];
+    const rollSum = roll.reduce((a, b) => a + b, 0);
+    const sum = expRoll.reduce((a, b) => a + b, 0);
+
+    const successValue = expRoll.filter((el) => el > 3).length;
 
     const calcResult=():SpellRollOutcomeEnum => {
-      if( initialRollSum<=4)
+      if( rollSum<=4)
         return SpellRollOutcomeEnum.CriticalFailure;
-      if (initialRollSum >= 17)
+      if (rollSum >= 17)
         return SpellRollOutcomeEnum.CriticalSuccess;
       return sum > 7 ? SpellRollOutcomeEnum.Success : SpellRollOutcomeEnum.Failure;
     }
+
     const outcome = calcResult();
 
-    return new SpellRollResult(roll,outcome, successValue);
+    return new SpellRollResult(expRoll,outcome, successValue);
   }
 }
 
