@@ -18,7 +18,7 @@ export enum DamageEffectEnum{
 
 export class Rules {
     static socialIsBotch(roll:number[], effectiveness:number){
-      return this.socialBotchNum(roll)>=this.socialSuccessNum(roll,effectiveness);
+      return (this.socialBotchNum(roll)>= roll.length/2)|| (this.socialSuccessNum(roll,effectiveness)===0);
     }
     static socialSuccessNum(roll:number[], effectiveness:number):number{
       return roll.filter((el) => el >= effectiveness).length;
