@@ -9,7 +9,7 @@ export const commandHandler:ICommandHandler = {
     if (!(command instanceof CombatRollCommand ))
       return null;
 
-    const roll = context.rollMany(3);
+    const roll = context.rollMany(3,6);
     const initialSum= roll.reduce((a, b) => a + b, 0);
     const outcome = determineOutcome(initialSum,context.globalContext.autoFail);
     return new CombatRollResult(roll, command.mod, command.mode, outcome);

@@ -21,14 +21,14 @@ export const commandHandler:ICommandHandler = {
     originalRoll = [...originalRoll, ...command.luckRoll.result.roll.map(t=>t.toString())]
     if (command.originalRoll.result.outcome === SocialRollOutcomeEnum.Botch && !Rules.socialIsBotch(orgRollNumber, command.originalRoll.effectiveness)){
       // after luck not a botch, explode
-      originalRoll = [...originalRoll, ...context.explode(orgRollNumber).map(t=>t.toString())]
-      orgRollNumber = [...orgRollNumber, ...context.explode(orgRollNumber)];
+      originalRoll = [...originalRoll, ...context.explode(orgRollNumber, command.originalRoll.sides).map(t=>t.toString())]
+      orgRollNumber = [...orgRollNumber, ...context.explode(orgRollNumber, command.originalRoll.sides)];
     }
 
 
     const successDices = Rules.socialSuccessNum(orgRollNumber, command.originalRoll.effectiveness);
     const isBotch = Rules.socialIsBotch(orgRollNumber, command.originalRoll.effectiveness);
     const outcome = isBotch? SocialRollOutcomeEnum.Botch:(successDices>=command.originalRoll.dices?SocialRollOutcomeEnum.SkillIncrease:SocialRollOutcomeEnum.Success);
-    return new SocialAggregateRollResult( orgRollNumber, originalRoll, command.originalRoll.effectiveness,outcome, successDices, command.originalRoll.dices);
+    return new SocialAggregateRollResult( orgRollNumber, originalRoll, command.originalRoll.effectiveness,outcome, successDices, command.originalRoll.dices, command.originalRoll.sides);
   }
 }

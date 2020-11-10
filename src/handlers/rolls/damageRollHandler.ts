@@ -10,7 +10,7 @@ export const commandHandler:ICommandHandler = {
     if (!(command instanceof DamageRollCommand ))
       return null;
 
-    const roll = context.rollMany(command.dices);
+    const roll = context.rollMany(command.dices,6);
     const arr6 = [...Array(6-command.effects.length), ...command.effects];
     const effects = [];
     let shock = 0;
@@ -27,7 +27,7 @@ export const commandHandler:ICommandHandler = {
       }
     }
     const additionalEffects = [];
-    const additionalRoll = context.rollMany(command.additionalEffects.length);
+    const additionalRoll = context.rollMany(command.additionalEffects.length,6);
     for (let i = 0; i<additionalRoll.length;i++){
       if (additionalRoll[i]>3){
         const effect= command.additionalEffects[i];

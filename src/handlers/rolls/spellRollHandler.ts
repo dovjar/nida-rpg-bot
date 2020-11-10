@@ -9,9 +9,9 @@ export const commandHandler:ICommandHandler = {
     if (!(command instanceof SpellRollCommand ))
       return null;
 
-    const roll =context.rollMany(3);
+    const roll =context.rollMany(3, 6);
 
-    const expRoll  = [...roll, ...context.explode(roll)];
+    const expRoll  = [...roll, ...context.explode(roll,6)];
     const rollSum = roll.reduce((a, b) => a + b, 0);
     const sum = expRoll.reduce((a, b) => a + b, 0);
 

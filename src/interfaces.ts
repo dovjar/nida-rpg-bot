@@ -15,7 +15,7 @@ export interface ICommandHandler{
 }
 export interface IMessageParser{
 
-  createCommand(cut:string):Promise<ICommand[]>;
+  createCommand(cut:string, context:Context):Promise<ICommand[]>;
   /**
    * commands priority, e.g. have two commands, 'help' and 'help ping', in that case commands 'help ping' priority must be higher
    */

@@ -1,7 +1,7 @@
 import { ICommand } from '../../interfaces';
 import { SocialReRollResult } from '../../commandResults/SocialReRollResult';
 export class SocialReRollCommand implements ICommand {
-  constructor(dices: number, effectiveness: number, explode:boolean) {
+  constructor(dices: number, effectiveness: number, explode:boolean, public sides:number) {
     this.dices = dices;
     this.effectiveness = effectiveness;
     this.explode = explode;

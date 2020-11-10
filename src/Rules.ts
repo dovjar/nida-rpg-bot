@@ -26,38 +26,8 @@ export class Rules {
     static socialBotchNum(roll:number[]):number{
       return roll.filter((el) => el === 1).length;
     }
-    static getLocation=(loc:LocationEnum, roll:number)=>{
-      return SubLocationEnum[roll+ loc *10 ]  ||
-             SubLocationEnum[roll-1+ loc *10 ] ||
-             SubLocationEnum[roll-2+ loc *10 ] ||
-             SubLocationEnum[roll-3+ loc *10 ] ||
-             SubLocationEnum[roll-4+ loc *10 ] ||
-             SubLocationEnum[roll-5+ loc *10 ];
-    }
-    static getLocationEffect=(loc:string):string=>{
-      switch(loc){
-        case 'HeadFace':
-          return '+1B';
-        case 'HeadNeck':
-          return '+2B';
-        case 'HeadEye':
-          return '+2C this is usually unarmored';
-        case 'BodyVital':
-          return '+2C';
-        case 'ArmJoint':
-          return '+2T and 4-6 to drop weapon';
-        case 'LegJoint':
-          return '+2T and 3-4 kneels or is off-balance, 5-6 falls down';
-        case 'BodyFlesh':
-        case 'ArmFlesh':
-        case 'LegFlesh':
-        case 'HeadScull':
-          return '+1T';
-        default:
-          return null;
-      }
-    }
-
+    
+    
 
 
   }

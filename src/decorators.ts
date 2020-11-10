@@ -7,13 +7,13 @@ export const decorateCombatRoll = (roll:number[], boldNumber=6) => {
       return el;
     });
   };
-export const decorateSocialRoll = (roll, dices = 3, diff = 4) => {
+export const decorateSocialRoll = (roll, dices = 3, diff = 4, sides=6) => {
   // eslint-disable-next-line no-param-reassign
   roll = roll.map((el, index) => {
     if (index >= dices) {
       return `**${el}**`;
     }
-    if (el === 6) {
+    if (el === sides) {
       return `__${el}__`;
     }
     if (el === 1) {
@@ -27,7 +27,7 @@ export const decorateSocialRoll = (roll, dices = 3, diff = 4) => {
   });
   return roll;
 };
-export const decorateSocialRollAfterLuck = (roll:string[], dices = 3, diff = 4) => {
+export const decorateSocialRollAfterLuck = (roll:string[], dices = 3, diff = 4, sides=6) => {
   // eslint-disable-next-line no-param-reassign
   const orgLength =dices + roll.filter(t=>t==='?').length;
   roll = roll.map((el, index) => {
@@ -37,7 +37,7 @@ export const decorateSocialRollAfterLuck = (roll:string[], dices = 3, diff = 4) 
     const n=parseInt(el,10);
     if(!n)
       return el;
-    if (n === 6) {
+    if (n === sides) {
       return `__${el}__`;
     }
     if (n === 1) {

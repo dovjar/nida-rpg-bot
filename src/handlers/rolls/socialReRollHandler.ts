@@ -9,13 +9,13 @@ export const commandHandler:ICommandHandler = {
     if (!(command instanceof SocialReRollCommand ))
       return null;
 
-    let roll = context.rollMany(command.dices);
+    let roll = context.rollMany(command.dices, command.sides);
 
     if (command.explode) {
-      roll = [...roll, ...context.explode(roll)];
+      roll = [...roll, ...context.explode(roll,command.sides )];
     }
     const successDices = roll.filter((el) => el >= command.effectiveness).length;
-    return new SocialReRollResult(roll,command.dices, command.effectiveness, successDices);
+    return new SocialReRollResult(roll,command.dices, command.effectiveness, successDices, command.sides);
   }
 }
 

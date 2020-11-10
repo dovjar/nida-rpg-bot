@@ -81,7 +81,7 @@ export class MessageHandler{
       const cut = message.content.substring(this.options.prefix.length).trim();
 
       for (const parser of this.messageParsers) {
-        const commands=await parser.createCommand(cut);
+        const commands=await parser.createCommand(cut, context);
         if(commands!=null)
         {
           let idx=0;

@@ -1,0 +1,24 @@
+{
+  "settings":{
+    "dSides":10
+  },
+    
+    "locations":{
+      "random":{
+        "aliases":["l"],
+        "10":"Head",
+        "9":"Left arm",
+        "8":"Right arm",
+        "7":"Left leg",
+        "6":"Right leg",
+        "5":"Body",
+        "4":"Body",
+        "3":"Body",
+        "2":"Body",
+        "1":"Body"
+
+      }
+     
+    }
+
+}

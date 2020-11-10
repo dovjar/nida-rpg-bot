@@ -10,15 +10,15 @@ export const commandHandler:ICommandHandler = {
     if (!(command instanceof SocialRollCommand ))
       return null;
 
-    let roll = context.rollMany(command.dices);
+    let roll = context.rollMany(command.dices, command.sides);
     const isBotch = Rules.socialIsBotch(roll, command.effectiveness);
 
     if (!isBotch) {
-      roll = [...roll, ...context.explode(roll)];
+      roll = [...roll, ...context.explode(roll,command.sides)];
     }
     const successDices = Rules.socialSuccessNum(roll, command.effectiveness);
     const outcome = isBotch? SocialRollOutcomeEnum.Botch:(successDices>=command.dices?SocialRollOutcomeEnum.SkillIncrease:SocialRollOutcomeEnum.Success);
-    return new SocialRollResult(roll,command.effectiveness, outcome, successDices, command.dices);
+    return new SocialRollResult(roll,command.effectiveness, outcome, successDices, command.dices, command.sides);
   }
 }
 

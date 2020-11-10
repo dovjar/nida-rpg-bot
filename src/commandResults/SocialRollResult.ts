@@ -1,7 +1,7 @@
 import { CommandResult } from "./CommandResult";
 import { decorateSocialRoll } from "../decorators";
 export class SocialRollResult extends CommandResult {
-    constructor(roll: number[], effectiveness: number, outcome: SocialRollOutcomeEnum,successDices:number, dices:number) {
+    constructor(roll: number[], effectiveness: number, outcome: SocialRollOutcomeEnum,successDices:number, dices:number, public sides) {
         super('');
         this.roll = roll;
         this.effectiveness = effectiveness;
@@ -9,7 +9,7 @@ export class SocialRollResult extends CommandResult {
         this.successDices = successDices;
         this.dices = dices;
 
-        this.message =`Roll ${this.dices}D6 [effectiveness ${this.effectiveness}] [${decorateSocialRoll(this.roll,this.dices, this.effectiveness)}]=${this.successDices} ${this.showBotchFail()}${this.showSkillIncrease()}`;
+        this.message =`Roll ${this.dices}D6 [effectiveness ${this.effectiveness}] [${decorateSocialRoll(this.roll,this.dices, this.effectiveness, this.sides)}]=${this.successDices} ${this.showBotchFail()}${this.showSkillIncrease()}`;
     }
     roll: number[];
     effectiveness: number;

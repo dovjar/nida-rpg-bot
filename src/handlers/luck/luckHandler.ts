@@ -81,7 +81,7 @@ const handleSocialLuck=(oldCommand: SocialRollCommand, dices:number ):CommandRes
   const roll=[...oldCommand.result.roll];
   const minDices = roll.sort().slice(0, dices);
   // on reroll do not explode if botch was rolled
-  const newCommand = new SocialReRollCommand(dices,oldCommand.effectiveness, oldCommand.result.outcome!==SocialRollOutcomeEnum.Botch);
+  const newCommand = new SocialReRollCommand(dices,oldCommand.effectiveness, oldCommand.result.outcome!==SocialRollOutcomeEnum.Botch, oldCommand.sides);
   const aggregateResult = new SocialRollAggregateCommand(oldCommand, newCommand, minDices);
   return new SimpleRedirectResult(`spending ${dices>1?2:1} points of luck to reroll last social roll, picked [${minDices}]`,
   [

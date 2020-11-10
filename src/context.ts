@@ -23,13 +23,13 @@ export class Context{
         return Math.ceil(Math.random() * sides)
     };
 
-    rollMany(dices:number, sides=6): number[]{
+    rollMany(dices:number, sides): number[]{
         return [...Array(dices)].map(() => this.rollOne(sides));
     };
-    explode = (arr) => {
-        let newArr = [...Array(arr.filter((el) => el === 6).length)].map(() => this.rollOne());
+    explode = (arr, maxValue) => {
+        let newArr = [...Array(arr.filter((el) => el === maxValue).length)].map(() => this.rollOne());
         if (newArr.some((el) => el === 6)) {
-          newArr = [...newArr, ...this.explode(newArr)];
+          newArr = [...newArr, ...this.explode(newArr, maxValue)];
         }
         return newArr;
       };
@@ -88,7 +88,12 @@ export class GlobalContext{
     constructor(rules,rulesAliasesMap ) {
         this.rules = rules;
         this.rulesAliasesMap = rulesAliasesMap;
+        if(this.rules.settings?.dSides)
+        {
+            this.dSides = this.rules.settings.dSides;
+        }
     }
+    dSides =6;
     autoFail:number = 7;
     npc:INpc[] = [];
     rules:any;
@@ -125,13 +130,20 @@ export class GlobalContext{
 // tslint:disable-next-line: max-classes-per-file
 class ContextManager{
     constructor() {
-        const rules = require('./../rules.json');
+        this.changeRules(`default`);
+    }
+
+    localContexts={}
+    globalContext;
+
+    public changeRules(rulesName: string){
+        const rules = require(`./../rules_${rulesName}.json`);
         const rulesAliasesMap=[];
         this.traverseObject(rules,rulesAliasesMap)
         this.globalContext =  new GlobalContext(rules, rulesAliasesMap);
+        this.localContexts={};
     }
-    localContexts={}
-    globalContext;
+
     getContext(userId:string):Context{
         if (!this.localContexts[userId])
             this.localContexts[userId]=new Context(this.globalContext, userId);
